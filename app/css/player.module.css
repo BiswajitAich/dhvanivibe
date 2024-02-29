@@ -1,0 +1,74 @@
+.playerBody {
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+    width: 100%;
+    height: 80px;
+    background-color: black;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-top: 1px solid aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 5px;
+}
+
+.songName {
+    width: 80%;
+    text-align: center;
+    font-size: small;
+    height: 20px;
+    overflow: hidden;
+}
+
+.songPosition {
+    width: 80%;
+    height: 3px;
+    background-color: aliceblue;
+}
+
+.playBtns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.prevBtn {
+    transform: rotate(180deg);
+}
+
+.playBtn,
+.nextBtn,
+.prevBtn {
+    border-radius: 45%;
+    font-weight: 900;
+    font-size: large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border: none;
+    text-align: center;
+    align-content: center;
+    overflow: hidden;
+    text-shadow: 1px 1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black,
+        -1px -1px 0px black;
+}
+
+.prevBtn,
+.nextBtn {
+    height: 30px;
+    width: 30px;
+}
+
+.playBtn {
+    height: 40px;
+    width: 40px;
+}

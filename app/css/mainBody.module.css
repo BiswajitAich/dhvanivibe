@@ -1,0 +1,14 @@
+.main{
+    position: absolute;
+    top: 100px;
+    background: rgb(12, 2, 27);
+    width: 100%;
+    min-height: 100%;
+}
+.showPice{
+    width: 100%;
+    min-height: 15px;
+    background: linear-gradient(180deg, transparent,  rgb(12, 2, 27));
+    position: relative;
+    top: -15px;
+}

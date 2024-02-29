@@ -1,0 +1,23 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body,
+:root {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: rgb(12, 2, 27);
+  color: rgb(199, 219, 217);
+  color-scheme: dark;
+}
+
+*::-webkit-scrollbar{
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

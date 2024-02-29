@@ -1,0 +1,26 @@
+.header{
+    width: 100%;
+    height: auto;
+}
+
+.headDiv{
+    background: linear-gradient(180deg, #007f63, transparent);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 85%;
+    height: 50px;
+    overflow: hidden;
+    padding: 25px 0px;
+    padding-top: 10px;
+    border-bottom-left-radius: 50px;
+    text-align: center;
+}
+.headDiv h1{
+    font-size: 1.5rem;
+}
+.headDiv h3{
+    font-size: 1rem;
+    color: rgb(255, 107, 211);
+    text-shadow: 1px 1px 5px rgb(0, 0, 0);
+}
