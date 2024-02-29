@@ -106,14 +106,14 @@ const SearchSong: React.FC = () => {
                 )}
             </div>
             {songData ? (
-                <DisplaySearchedSong 
-                songData={songData} 
-                sendSource={handleDataFromChild}
-                sendTitle={handelTitle}
-                clearSongData={handleclearSongData}
+                <DisplaySearchedSong
+                    songData={songData}
+                    sendSource={handleDataFromChild}
+                    sendTitle={handelTitle}
+                    clearSongData={handleclearSongData}
                 />
             ) : null}
-            <Player source={receivedData} title={title}/>
+            <Player audioId={receivedData} title={title} />
 
         </div>
     )

@@ -10,23 +10,10 @@ interface props {
 const DisplaySearchedSong: React.FC<any> = ({ songData, sendSource, sendTitle, clearSongData }) => {
     const [fetching, setFetching] = React.useState<boolean>(false)
 
-    const handleSongId = (songId: string, title:string) => {
-        const fetchSong = async () => {
-            setFetching(prev => prev = true);
-            try {
-                const base = window.location.origin
-                const res = await fetch(`${base}/api/fetchSong?songId=${songId}`)
-                const data = await res.json()
-                sendSource(data.response)
-                sendTitle(title)
-            } catch (error) {
-                sendSource(null)
-                sendTitle("")
-            } finally {
-                setFetching(prev => prev = false);
-            }
-        }
-        fetchSong()
+    const handleSongId = (songId: string, title: string) => {
+        console.log("songId",songId)
+        sendTitle(title)
+        sendSource(songId)
     }
 
     const handleBack = () => {
@@ -48,7 +35,7 @@ const DisplaySearchedSong: React.FC<any> = ({ songData, sendSource, sendTitle, c
                     <p>{song.title}</p>
                 </button>
             ))}
-     
+
         </div>
     )
 }
