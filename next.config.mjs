@@ -2,7 +2,7 @@
 const nextConfig = {
 
     images: {
-        domains: ['hls-server.vercel.app'],
+        domains: ['raw.githubusercontent.com', 'hls-server.vercel.app'],
     },
 
 };

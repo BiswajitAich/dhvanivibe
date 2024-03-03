@@ -7,13 +7,12 @@ interface props {
     img: string,
     title: string
 }
-const DisplaySearchedSong: React.FC<any> = ({ songData, sendSource, sendTitle, clearSongData }) => {
+const DisplaySearchedSong: React.FC<any> = ({ songData, sendPlayingData, clearSongData }) => {
     const [fetching, setFetching] = React.useState<boolean>(false)
 
-    const handleSongId = (songId: string, title: string) => {
+    const handleSongId = (songId: string, title: string, img:string) => {
         console.log("songId",songId)
-        sendTitle(title)
-        sendSource(songId)
+        sendPlayingData([songId, title, img])
     }
 
     const handleBack = () => {
@@ -24,7 +23,7 @@ const DisplaySearchedSong: React.FC<any> = ({ songData, sendSource, sendTitle, c
             <button className={style.back} onClick={handleBack}>back</button>
             <p>Songs Found !</p>
             {songData?.response?.map((song: props, idx: number) => (
-                <button key={idx} onClick={() => handleSongId(song.id, song.title)} disabled={fetching}>
+                <button key={idx} onClick={() => handleSongId(song.id, song.title, song.img)} disabled={fetching}>
                     <div>
                         <Image
                             src={song.img}

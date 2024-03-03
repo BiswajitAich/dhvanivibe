@@ -11,7 +11,7 @@ const SearchSong: React.FC = () => {
     const [title, setTitle] = React.useState<string>("");
     const [errorFound, setErrorFound] = React.useState<boolean>(false);
     const [songData, setSongData] = React.useState<[] | null>(null);
-    const [receivedData, setReceivedData] = React.useState<string | null>(null);
+    const [receivedData, setReceivedData] = React.useState<string[]>([]);
 
 
     React.useEffect(() => {
@@ -55,11 +55,8 @@ const SearchSong: React.FC = () => {
         }
 
     }
-    const handleDataFromChild = (data: string) => {
-        setReceivedData(data);
-    };
-    const handelTitle = (title: string) => {
-        setTitle(title);
+    const handlesendPlayingData = (data: string,) => {
+        setReceivedData([data[0], data[1], data[2]]);
     };
     const handleclearSongData = () => {
         setSongData(null);
@@ -108,12 +105,18 @@ const SearchSong: React.FC = () => {
             {songData ? (
                 <DisplaySearchedSong
                     songData={songData}
-                    sendSource={handleDataFromChild}
-                    sendTitle={handelTitle}
+                    sendPlayingData={handlesendPlayingData}
                     clearSongData={handleclearSongData}
                 />
             ) : null}
-            <Player audioId={receivedData} title={title} />
+            {songData || receivedData ? (
+                <Player
+                    sondId={receivedData[0]}
+                    title={receivedData[1]}
+                    image={receivedData[2]}
+                />
+            ) : null}
+
 
         </div>
     )
