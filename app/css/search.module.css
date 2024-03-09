@@ -74,8 +74,13 @@
     font-weight: 600;
     border: none;
     z-index: 2;
+    box-shadow: 1px 1px 3px inset aliceblue, 0px 0px 3px aliceblue;
+    cursor: pointer;
 }
 
+.back:hover{
+    background: radial-gradient(transparent,rgba(0, 139, 139, 0.7), rgba(122, 0, 96, 0.7), transparent);
+}
 .songCards {
     display: flex;
     flex-wrap: wrap;

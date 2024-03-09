@@ -76,7 +76,7 @@ const SearchSong: React.FC = () => {
                         placeholder="Enter Song to Search..."
                         className={style.input}
                         onKeyDown={(e) => {
-                            if (e.key === "Enter") handleSearchText(e)
+                            if (e.key.toLowerCase() === "enter") handleSearchText(e)
                         }}
                         maxLength={30}
                         autoFocus
