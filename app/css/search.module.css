@@ -1,4 +1,4 @@
-.searchDiv{
+.searchDiv {
     position: fixed;
     right: 5px;
     display: flex;
@@ -9,7 +9,7 @@
     overflow: hidden;
 }
 
-.input{
+.input {
     color: aliceblue;
     border-radius: 15px;
     border: none;
@@ -23,7 +23,7 @@
 }
 
 @media screen and (max-width: 600px) {
-    .input{
+    .input {
         max-height: 2lh;
     }
 }
@@ -44,21 +44,23 @@
     font-weight: 900;
 }
 
-.show{
+.show {
     animation: showDiv 0.5s ease;
 }
+
 @keyframes showDiv {
-    0%{
+    0% {
         max-width: 30px;
         min-width: 30px;
     }
-    100%{
+
+    100% {
         min-width: calc(50% + 30px);
         min-width: calc(50% + 30px);
     }
 }
 
-.back{
+.back {
     width: 50px;
     height: 30px;
     padding: 5px;
@@ -71,4 +73,49 @@
     font-size: 1rem;
     font-weight: 600;
     border: none;
+    z-index: 2;
+}
+
+.songCards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding-bottom: 200px;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.songs {
+    height: 210px;
+    border: 2px solid;
+    aspect-ratio: 3 / 4;
+    border-radius: 5px;
+    overflow: hidden;
+    border-image: linear-gradient(to right, #6e00ff, #ff0097);
+    border-image-slice: 1;
+    clip-path: border-box;
+}
+
+.songDivs {
+    height: 210px;
+    aspect-ratio: 3 / 4;
+}
+
+.songs p {
+    position: relative;
+    bottom: 25px;
+    width: 100%;
+    min-height: 20px;
+    max-height: 40px;
+    text-wrap: pretty;
+    background-color: black;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.songDivs img {
+    color: transparent;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }

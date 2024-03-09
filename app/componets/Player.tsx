@@ -1,8 +1,10 @@
-import React, { useState, useRef } from "react";
+"use client"
+import React, { useState, useRef, useContext } from "react";
 import style from "@/app/css/player.module.css";
 import Image from "next/image";
+import { SongContext } from "./context/SongContextProvider";
 
-const Player: React.FC<any> = ({ sondId, title, image }) => {
+const Player: React.FC<any> = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [value, setValue] = useState<number>(50);
   const [audioLength, setAudioLength] = useState<number>(0);
@@ -12,7 +14,7 @@ const Player: React.FC<any> = ({ sondId, title, image }) => {
   const [showSound, setShowSound] = useState<boolean>(false);
   const [topPosition0, setTopPosition0] = useState<string>("&#x25B2;");
   const audioRef = useRef<HTMLAudioElement>(null);
-
+  const { currentSongData } = useContext<any>(SongContext);
 
   const handlePlayPause = () => {
     if (audioRef.current) {
@@ -77,7 +79,7 @@ const Player: React.FC<any> = ({ sondId, title, image }) => {
         <div className={style.songPosition}>
           <div className={style.songNameTime}>
             <p>{currentTimeTrack}</p>
-            <p className={style.songName}>{title}</p>
+            <p className={style.songName}>{currentSongData?.title}</p>
             <p>{currentTimeDuration}</p>
             <button
               onClick={handletopPosition0}
@@ -86,7 +88,7 @@ const Player: React.FC<any> = ({ sondId, title, image }) => {
               {topPosition0 === "&#x25B2;" ? <>&#x25B2;</> : <>&#x25BC;</>}
             </button>
           </div>
-          {title ? (
+          {currentSongData?.title ? (
             <input
               type="range"
               min={0}
@@ -99,7 +101,7 @@ const Player: React.FC<any> = ({ sondId, title, image }) => {
 
         <audio
           ref={audioRef}
-          src={`${process.env.NEXT_PUBLIC_API}fetch?id=${sondId}`}
+          src={`${process.env.NEXT_PUBLIC_API}fetch?id=${currentSongData?.id}`}
           autoPlay
           onTimeUpdate={songTimeUpdate}
           onLoad={handlePlayPause}
@@ -133,12 +135,12 @@ const Player: React.FC<any> = ({ sondId, title, image }) => {
         </div>
       </div>
       <div className={style.displaySong}>
-        <div className={style.displaySongDetails} style={{ backgroundImage: `url(${image || "https://raw.githubusercontent.com/BiswajitAich/lilastore/main/public/images/some/no-image.webp"})` }}>
+        <div className={style.displaySongDetails} style={{ backgroundImage: `url(${currentSongData?.img || "https://raw.githubusercontent.com/BiswajitAich/lilastore/main/public/images/some/no-image.webp"})` }}>
           <div className={style.displaySongImg}>
             <div className={style.songImg}>
               <Image
-                src={image || "https://raw.githubusercontent.com/BiswajitAich/lilastore/main/public/images/some/no-image.webp"}
-                alt={title || "no image"}
+                src={currentSongData?.img || "https://raw.githubusercontent.com/BiswajitAich/lilastore/main/public/images/some/no-image.webp"}
+                alt={currentSongData?.title || "no image"}
                 height={800}
                 width={700}
               />

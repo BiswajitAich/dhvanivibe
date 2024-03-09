@@ -1,18 +1,25 @@
 import Image from "next/image"
-import React from "react"
+import React, { useContext } from "react"
 import style from "@/app/css/search.module.css"
+import { SongContext } from "./context/SongContextProvider"
 
-interface props {
-    id: string,
-    img: string,
-    title: string
-}
-const DisplaySearchedSong: React.FC<any> = ({ songData, sendPlayingData, clearSongData }) => {
+const DisplaySearchedSong: React.FC<any> = ({ clearSongData }) => {
     const [fetching, setFetching] = React.useState<boolean>(false)
+    const { songData, setCurrentSongData } = useContext<any>(SongContext)
 
-    const handleSongId = (songId: string, title: string, img:string) => {
-        console.log("songId",songId)
-        sendPlayingData([songId, title, img])
+    const handleSongId = (songId: string, title: string, img: string) => {
+        console.log("songId", songId)
+        setFetching(prev => prev = true)
+        setCurrentSongData(
+            {
+                id: songId,
+                title: title,
+                img: img
+            }
+        )
+        setTimeout(() => {
+            setFetching(false);
+        }, 500);
     }
 
     const handleBack = () => {
@@ -21,20 +28,25 @@ const DisplaySearchedSong: React.FC<any> = ({ songData, sendPlayingData, clearSo
     return (
         <div>
             <button className={style.back} onClick={handleBack}>back</button>
-            <p>Songs Found !</p>
-            {songData?.response?.map((song: props, idx: number) => (
-                <button key={idx} onClick={() => handleSongId(song.id, song.title, song.img)} disabled={fetching}>
-                    <div>
-                        <Image
-                            src={song.img}
-                            height={180}
-                            width={150}
-                            alt={`image ${idx}`} />
-                    </div>
-                    <p>{song.title}</p>
-                </button>
-            ))}
-
+            <p style={{ marginTop: '10px' }}>Songs Found !</p>
+            <div className={style.songCards}>
+                {songData?.map((song: any, idx: number) => (
+                    <button key={idx}
+                        onClick={() => handleSongId(song.id, song.title, song.img)}
+                        disabled={fetching}
+                        className={style.songs}
+                    >
+                        <div className={style.songDivs}>
+                            <Image
+                                src={song.img}
+                                height={180}
+                                width={150}
+                                alt={`image ${idx}`} />
+                        </div>
+                        <p>{song.title}</p>
+                    </button>
+                ))}
+            </div>
         </div>
     )
 }

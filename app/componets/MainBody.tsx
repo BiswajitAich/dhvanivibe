@@ -1,10 +1,15 @@
 import style from "@/app/css/mainBody.module.css"
 import SearchSong from "./SearchSong"
+import SongContextProvider from "./context/SongContextProvider"
+import Player from "./Player"
 const MainBody: React.FC = () => {
-    return(
+    return (
         <main className={style.main}>
-            <div className={style.showPice}/>
-            <SearchSong />
+            <SongContextProvider>
+                <div className={style.showPice} />
+                <SearchSong />
+                <Player />
+            </SongContextProvider>
         </main>
     )
 }
