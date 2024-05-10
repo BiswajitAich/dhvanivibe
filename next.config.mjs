@@ -2,7 +2,7 @@
 const nextConfig = {
 
     images: {
-        domains: ['raw.githubusercontent.com', 'hls-server.vercel.app'],
+        domains: ['raw.githubusercontent.com', 'hls-server.vercel.app', 'www.pagalworld.com.cm'],
     },
     // typescript: {
     //     ignoreBuildErrors: true,

@@ -1,14 +1,94 @@
-.main{
-    position: absolute;
+.main {
+    position: relative;
     top: 100px;
-    background: rgb(12, 2, 27);
+    background: rgb(32 80 96);
     width: 100%;
-    min-height: 100%;
+    min-height: 100dvh;
 }
-.showPice{
+
+.showPice {
     width: 100%;
     min-height: 15px;
-    background: linear-gradient(180deg, transparent,  rgb(12, 2, 27));
+    background: linear-gradient(180deg, transparent, rgb(32 80 96));
     position: relative;
     top: -15px;
+}
+
+.m_b1 {
+    width: 100%;
+    background: linear-gradient(0deg, #0e333d, #5a7b82, #20515c);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background-image: url(/_next/static/media/music-girl.79e442ee.webp);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.m_b2 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    -webkit-backdrop-filter: blur(10px) grayscale(0.1);
+    backdrop-filter: blur(20px);
+    background-color: #00000030;
+    justify-items: center;
+}
+
+.m_b2_1 {
+    max-width: 100dvw;
+    height: 60dvh;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+}
+
+.m_b2_1 img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.m_b2_2 {
+    width: 40dvw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.m_b2_2_1 {
+    /* transform: perspective(1000px) rotateX(45deg) rotateY(20deg); */
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #0000006e;
+    border: 2px solid whitesmoke;
+    box-shadow: 10px 10px 10px black, 5px 5px 5px whitesmoke;
+}
+
+.m_b2_2_1 p {
+    font-size: xx-large;
+    font-weight: bolder;
+    text-shadow: 5px 5px 5px black;
+}
+.m_b2_2_1 span{
+    color: cyan;
+    text-shadow: 2px 2px 2px black;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+}
+.contain{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+@media screen and (max-width: 750px) {
+    .m_b2_1 {
+        max-height: 60dvh;
+        height: auto;
+    }
 }

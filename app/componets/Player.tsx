@@ -1,10 +1,11 @@
 "use client"
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import style from "@/app/css/player.module.css";
 import Image from "next/image";
 import { SongContext } from "./context/SongContextProvider";
 
 const Player: React.FC<any> = () => {
+  const [audioSrc, setAudioSrc] = useState<string>("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [value, setValue] = useState<number>(50);
   const [audioLength, setAudioLength] = useState<number>(0);
@@ -16,7 +17,27 @@ const Player: React.FC<any> = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const { currentSongData } = useContext<any>(SongContext);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(currentSongData);
+
+        try {
+            const base = window.location.origin;
+            const res = await fetch(`${base}/api/fetchAudio?id=${currentSongData.songId}`)
+            const data = await res.json()
+            console.log(`${base}/api/fetchAudio?id=${currentSongData.songId}`);
+            console.log(data);
+            setAudioSrc(data.url)
+        } catch (error) {
+          setAudioSrc("")
+        } 
+    }
+
+     fetchData()
+}, [currentSongData])
+
   const handlePlayPause = () => {
+    
     if (audioRef.current) {
       if (isPlaying) {
         console.log("Pausing...");
@@ -79,7 +100,7 @@ const Player: React.FC<any> = () => {
         <div className={style.songPosition}>
           <div className={style.songNameTime}>
             <p>{currentTimeTrack}</p>
-            <p className={style.songName}>{currentSongData?.title}</p>
+            <p className={style.songName}>{currentSongData?.name}</p>
             <p>{currentTimeDuration}</p>
             <button
               onClick={handletopPosition0}
@@ -88,7 +109,7 @@ const Player: React.FC<any> = () => {
               {topPosition0 === "&#x25B2;" ? <>&#x25B2;</> : <>&#x25BC;</>}
             </button>
           </div>
-          {currentSongData?.title ? (
+          {currentSongData?.name ? (
             <input
               type="range"
               min={0}
@@ -101,7 +122,7 @@ const Player: React.FC<any> = () => {
 
         <audio
           ref={audioRef}
-          src={`${process.env.NEXT_PUBLIC_API}fetch?id=${currentSongData?.id}`}
+          src={audioSrc}
           autoPlay
           onTimeUpdate={songTimeUpdate}
           onLoad={handlePlayPause}
@@ -140,7 +161,7 @@ const Player: React.FC<any> = () => {
             <div className={style.songImg}>
               <Image
                 src={currentSongData?.img || "https://raw.githubusercontent.com/BiswajitAich/lilastore/main/public/images/some/no-image.webp"}
-                alt={currentSongData?.title || "no image"}
+                alt={currentSongData?.name || "no image"}
                 height={800}
                 width={700}
               />

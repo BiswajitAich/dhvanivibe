@@ -1,0 +1,117 @@
+.h {
+    margin: 10px 0;
+    padding: 20px;
+    background: repeating-linear-gradient(45deg, black, transparent 100px);
+    color: #ffbfac;
+}
+
+.viral_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    overflow: auto;
+    column-gap: 15px;
+}
+
+.viral_card:nth-child(1) {
+    margin-left: 10px;
+}
+
+.viral_card:nth-last-child() {
+    margin-right: 10px;
+}
+
+.viral_card {
+    overflow: hidden;
+    position: relative;
+    min-width: 200px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px black, -2px -2px 2px black, 2px -2px 2px black, -2px 2px 2px black;
+    cursor: pointer;
+}
+
+.viral_card_play {
+    width: 100%;
+    aspect-ratio: 1/1;
+    position: absolute;
+    inset: 0 0 0 0;
+    backdrop-filter: blur(4px);
+    background-color: rgb(0 139 139 / 28%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+
+.viral_card_play img {
+    color: transparent;
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.show {
+    animation: show_viral_card_play 0.5s ease-out;
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.hide {
+    animation: hide_viral_card_play 0.5s ease-out;
+    pointer-events: none;
+    opacity: 0;
+}
+
+@keyframes show_viral_card_play {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes hide_viral_card_play {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.viral_t {
+    width: 200px;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+}
+
+.viral_t img {
+    color: transparent;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.viral_p {
+    position: absolute;
+    bottom: 0;
+    background-color: #0000004a;
+    width: -webkit-fill-available;
+    text-align: center;
+    padding: 10% 0;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: bolder;
+    text-shadow: 2px 2px 2px black;
+}
