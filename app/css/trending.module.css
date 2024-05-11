@@ -89,13 +89,13 @@
     aspect-ratio: 3/4;
     overflow: hidden;
 }
-
+/* 
 .viral_t img {
     color: transparent;
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
+} */
 
 .viral_p {
     position: absolute;

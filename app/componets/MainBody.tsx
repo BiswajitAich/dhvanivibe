@@ -5,8 +5,9 @@ import SongContextProvider from "./context/SongContextProvider"
 import Player from "./Player"
 import Image from "next/image"
 import music_girl from "@/public/music-girl.webp"
-import { StrictMode, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Trending from "./(collections)/Trending"
+import OldIsGold from "./(collections)/OldIsGold"
 
 const MainBody: React.FC = () => {
     const [message, setMessage] = useState<string>("");
@@ -66,7 +67,6 @@ const MainBody: React.FC = () => {
     }
     return (
         <main className={style.main}>
-            <StrictMode>
                 <SongContextProvider>
                     <div className={style.showPice} />
                     <div className={style.m_b1}>
@@ -94,12 +94,12 @@ const MainBody: React.FC = () => {
                         </div>
                     </div>
                     <Trending />
+                    <OldIsGold />
                     {/* <div className={style.contain}>
                 </div> */}
                     {/* <SearchSong /> */}
                     <Player />
                 </SongContextProvider>
-            </StrictMode>
         </main>
     )
 }
