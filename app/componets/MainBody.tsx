@@ -8,6 +8,7 @@ import music_girl from "@/public/music-girl.webp"
 import { useEffect, useRef, useState } from "react"
 import Trending from "./(collections)/Trending"
 import OldIsGold from "./(collections)/OldIsGold"
+import Footer from "./Footer"
 
 const MainBody: React.FC = () => {
     const [message, setMessage] = useState<string>("");
@@ -95,6 +96,7 @@ const MainBody: React.FC = () => {
                     </div>
                     <Trending />
                     <OldIsGold />
+                    <Footer />
                     {/* <div className={style.contain}>
                 </div> */}
                     {/* <SearchSong /> */}

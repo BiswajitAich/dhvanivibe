@@ -3,19 +3,21 @@ import React, { useState, useRef, useContext, useEffect } from "react";
 import style from "@/app/css/player.module.css";
 import Image from "next/image";
 import { SongContext } from "./context/SongContextProvider";
+import noImage from '@/public/no-image.webp'
 
 const Player: React.FC<any> = () => {
   const [audioSrc, setAudioSrc] = useState<string>("");
   const [isPlaying, setIsPlaying] = useState(false);
-  const [value, setValue] = useState<number>(50);
-  const [audioLength, setAudioLength] = useState<number>(0);
+  // const [value, setValue] = useState<number>(50);
+  // const [audioLength, setAudioLength] = useState<number>(0);
   const [currentTimeTrack, setCurrentTimeTrack] = useState<string>("(00:00)");
   const [currentTimeDuration, setCurrentTimeDuration] = useState<string>("(00:00)");
-  const [songPosition, setSongPosition] = useState<number>(0);
+  // const [songPosition, setSongPosition] = useState<number>(0);
   const [songData, setSongData] = useState<any>();
-  const [showSound, setShowSound] = useState<boolean>(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  // const [showSound, setShowSound] = useState<boolean>(false);
   const { currentSongData } = useContext<any>(SongContext);
+  const songRef = useRef<HTMLAudioElement>(null);
+  const progressRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,42 +42,46 @@ const Player: React.FC<any> = () => {
 
   const handlePlayPause = () => {
 
-    if (audioRef.current) {
+    if (songRef.current) {
       if (isPlaying) {
         console.log("Pausing...");
-        audioRef.current.pause();
+        songRef.current.pause();
       } else {
+        // progressRef.current!.value = songRef.current.currentTime.toString();
         console.log("Playing...");
-        audioRef.current.play();
+        songRef.current.play();
       }
       setIsPlaying((prev) => !prev);
     }
   };
 
-  const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = Number(e.target.value);
-    const normalizedValue = Math.min(1, Math.max(0, rawValue / 100));
-    setValue(Math.floor(normalizedValue * 100));
-  };
+  // const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const rawValue = Number(e.target.value);
+  //   const normalizedValue = Math.min(1, Math.max(0, rawValue / 100));
+  //   setValue(Math.floor(normalizedValue * 100));
+  // };
 
 
+
+
+  const handleMeatData = () => {
+    progressRef.current!.max = songRef.current!.duration.toString();
+    progressRef.current!.value = songRef.current!.currentTime.toString();
+  }
   const handleSongPosition = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!audioRef.current) return
-    const newPosition = Number(e.target.value);
-    const newDuration = (newPosition / 100) * audioRef.current.duration;
-    setSongPosition(newDuration);
-    // console.log("newPosition",newPosition)
-    (audioRef.current as HTMLAudioElement).currentTime = newDuration;
+    songRef.current?.play();
+    songRef.current!.currentTime = Number(e.target.value);
+    progressRef.current!.value = e.target.value
+    // console.log(songRef.current?.currentTime);
+    // console.log(Number(e.target.value));
   };
-
 
   const songTimeUpdate = () => {
-    if (!audioRef.current?.duration) return;
-
-    const currentSeconds = Math.floor(audioRef.current!.currentTime % 60);
-    const currentMinutes = Math.floor(audioRef.current!.currentTime / 60);
-    const durationSeconds = Math.floor(audioRef.current!.duration % 60);
-    const durationMinutes = Math.floor(audioRef.current!.duration / 60);
+    progressRef.current!.value = songRef.current!.currentTime.toString();
+    const currentSeconds = Math.floor(songRef.current!.currentTime % 60);
+    const currentMinutes = Math.floor(songRef.current!.currentTime / 60);
+    const durationSeconds = Math.floor(songRef.current!.duration % 60);
+    const durationMinutes = Math.floor(songRef.current!.duration / 60);
 
     const formatTime = (minutes: number, seconds: number) => {
       const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
@@ -85,10 +91,7 @@ const Player: React.FC<any> = () => {
 
     setCurrentTimeTrack(formatTime(currentMinutes, currentSeconds));
     setCurrentTimeDuration(formatTime(durationMinutes, durationSeconds));
-    setSongPosition(audioRef.current!.currentTime);
-    setAudioLength(audioRef.current.duration);
-  };
-
+  }
 
   return (
     <div className={style.playerBody} >
@@ -98,25 +101,24 @@ const Player: React.FC<any> = () => {
           <p className={style.songName}>{currentSongData?.name}</p>
           <p>{currentTimeDuration}</p>
         </div>
-        {audioSrc ? (
+        {songRef?.current?.load? (
           <input
+            id={style.progress}
+            ref={progressRef}
             type="range"
-            min={0}
-            max={audioLength}
-            value={songPosition}
             onChange={(e) => handleSongPosition(e)}
           />
         ) : null}
       </div>
 
-      <audio controls
-        ref={audioRef}
+      <audio 
+        ref={songRef}
         autoPlay
         onTimeUpdate={songTimeUpdate}
         onLoad={handlePlayPause}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
-        style={{ display: 'none' }}
+        onLoadedMetadata={handleMeatData}
         preload="metadata"
       >
         <source src={audioSrc} type="audio/mpeg" />
@@ -126,12 +128,15 @@ const Player: React.FC<any> = () => {
       </audio>
 
       <div className={style.playBtns}>
+        <Image className={style.image} 
+        src={currentSongData?.img || noImage} height={50} width={50} objectFit="cover" 
+        alt={currentSongData?.name || "no image"}/>
         <button className={style.prevBtn}>&#x25B6;|</button>
-        <button className={style.playBtn} onClick={handlePlayPause}>
+        <button className={style.playBtn} onClick={handlePlayPause} disabled={songRef.current?.readyState !== 4}>
           {isPlaying ? "||" : <>&#x25B6;</>}
         </button>
         <button className={style.nextBtn}>&#x25B6;|</button>
-        <button
+        {/*  <button
           onClick={() => setShowSound(prev => !prev)}
           className={style.sound}
         >&#128266;</button>
@@ -145,7 +150,7 @@ const Player: React.FC<any> = () => {
               onChange={(e) => handleValue(e)}
             />
           </div>
-        ) : null}
+        ) : null} */}
 
       </div>
     </div>
