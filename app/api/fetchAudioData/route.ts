@@ -7,9 +7,9 @@ export async function GET(request: NextRequest) {
     const fetchData = async (songId: string) => {
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API1}/songData?id=${songId}`, {
-                next: {
-                    revalidate: 3600
-                }
+                // next: {
+                //     revalidate: 3600
+                // }
                 // cache: "no-cache"
             });
             const data = await res.json()

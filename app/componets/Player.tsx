@@ -6,33 +6,30 @@ import { SongContext } from "./context/SongContextProvider";
 import noImage from '@/public/no-image.webp'
 
 const Player: React.FC<any> = () => {
-  const [audioSrc, setAudioSrc] = useState<string>("");
-  const [isPlaying, setIsPlaying] = useState(false);
-  // const [value, setValue] = useState<number>(50);
-  // const [audioLength, setAudioLength] = useState<number>(0);
+  const [audioSrc, setAudioSrc] = useState<string[]>([]);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [audioReady, setAudioReady] = useState<boolean>(false);
   const [currentTimeTrack, setCurrentTimeTrack] = useState<string>("(00:00)");
   const [currentTimeDuration, setCurrentTimeDuration] = useState<string>("(00:00)");
-  // const [songPosition, setSongPosition] = useState<number>(0);
   const [songData, setSongData] = useState<any>();
-  // const [showSound, setShowSound] = useState<boolean>(false);
   const { currentSongData } = useContext<any>(SongContext);
   const songRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      // console.log(currentSongData);
-
       try {
         const base = window.location.origin;
         const res = await fetch(`${base}/api/fetchAudioData?id=${currentSongData.songId}`)
         const data = await res.json()
         console.log(`${base}/api/fetchAudio?id=${currentSongData.songId}`);
-        console.log("audio ___" + data);
-        setAudioSrc(data.audio)
+        const audioSources = [data.audio].concat(data?.downloadData || []);
+        const filteredSources = audioSources.filter(source => source);
+        setAudioSrc(filteredSources);
+        console.log("audio ___", filteredSources);
         setSongData(data)
       } catch (error) {
-        setAudioSrc("")
+        setAudioSrc([])
       }
     }
 
@@ -55,17 +52,7 @@ const Player: React.FC<any> = () => {
     }
   };
 
-  // const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const rawValue = Number(e.target.value);
-  //   const normalizedValue = Math.min(1, Math.max(0, rawValue / 100));
-  //   setValue(Math.floor(normalizedValue * 100));
-  // };
-
-
-
-
   const handleMeatData = () => {
-    progressRef.current!.max = songRef.current!.duration.toString();
     progressRef.current!.value = songRef.current!.currentTime.toString();
   }
   const handleSongPosition = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,66 +79,87 @@ const Player: React.FC<any> = () => {
     setCurrentTimeTrack(formatTime(currentMinutes, currentSeconds));
     setCurrentTimeDuration(formatTime(durationMinutes, durationSeconds));
   }
+  useEffect(() => {
+    if (audioSrc.length > 0) {
+      sources();
+      songRef.current?.load
+    }
+  }, [audioSrc])
+
+  const sources = () => {
+    for (let i = 0; i < audioSrc.length; i++) {
+      const audio = new Audio(audioSrc[i]);
+      audio.addEventListener("loadeddata", () => {
+        if (progressRef.current) {
+          progressRef.current.max = audio.duration.toString();
+        }
+        setAudioReady(true);
+      });
+      audio.addEventListener("error", () => {
+        if (i < audioSrc.length - 1) {
+          sources(); 
+        }
+      });
+      return <source key={i} src={audioSrc[i]} type="audio/mpeg" />;
+    }
+    return null;
+  };
+  
 
   return (
-    <div className={style.playerBody} >
-      <div className={style.songPosition}>
-        <div className={style.songNameTime}>
-          <p>{currentTimeTrack}</p>
-          <p className={style.songName}>{currentSongData?.name}</p>
-          <p>{currentTimeDuration}</p>
-        </div>
-        {songRef?.current?.load? (
+    <div className={style.playerBody}>
+
+      {audioSrc.length > 0 && (
+        <audio
+          ref={songRef}
+          autoPlay
+          onTimeUpdate={songTimeUpdate}
+          onLoad={handlePlayPause}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onLoadedMetadata={handleMeatData}
+          preload="metadata"
+        >
+          {sources()}
+        </audio>
+      )}
+
+      {currentSongData?.img ?
+        <Image className={style.image}
+          src={currentSongData?.img || noImage}
+          height={50}
+          width={50}
+          // objectFit="cover"
+          alt={currentSongData?.name || "no image"} />
+        : null
+      }
+
+
+      <div className={style.controls} >
+        <div className={style.songPosition}>
+          {currentSongData?.name ?
+            <div className={style.songNameTime}>
+              <p>{currentTimeTrack}</p>
+              <p className={style.songName}>{currentSongData?.name}</p>
+              <p>{currentTimeDuration}</p>
+            </div> : null
+          }
           <input
             id={style.progress}
             ref={progressRef}
             type="range"
             onChange={(e) => handleSongPosition(e)}
+            className={!audioReady ? style.hide : ""}
           />
-        ) : null}
-      </div>
+        </div>
+        <div className={style.playBtns}>
+          <button className={style.prevBtn} disabled>&#x25B6;|</button>
+          <button className={style.playBtn} onClick={handlePlayPause} disabled={!audioReady}>
+            {isPlaying ? "||" : <>&#x25B6;</>}
+          </button>
+          <button className={style.nextBtn} disabled>&#x25B6;|</button>
 
-      <audio 
-        ref={songRef}
-        autoPlay
-        onTimeUpdate={songTimeUpdate}
-        onLoad={handlePlayPause}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onLoadedMetadata={handleMeatData}
-        preload="metadata"
-      >
-        <source src={audioSrc} type="audio/mpeg" />
-        {Array.isArray(songData?.downloadData) && songData?.downloadData?.length > 0 && (
-          <source src={songData?.downloadData[0]} type="audio/mpeg" />
-        )}
-      </audio>
-
-      <div className={style.playBtns}>
-        <Image className={style.image} 
-        src={currentSongData?.img || noImage} height={50} width={50} objectFit="cover" 
-        alt={currentSongData?.name || "no image"}/>
-        <button className={style.prevBtn}>&#x25B6;|</button>
-        <button className={style.playBtn} onClick={handlePlayPause} disabled={songRef.current?.readyState !== 4}>
-          {isPlaying ? "||" : <>&#x25B6;</>}
-        </button>
-        <button className={style.nextBtn}>&#x25B6;|</button>
-        {/*  <button
-          onClick={() => setShowSound(prev => !prev)}
-          className={style.sound}
-        >&#128266;</button>
-        {showSound ? (
-          <div className={style.changeSound}>
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={value}
-              onChange={(e) => handleValue(e)}
-            />
-          </div>
-        ) : null} */}
-
+        </div>
       </div>
     </div>
 
