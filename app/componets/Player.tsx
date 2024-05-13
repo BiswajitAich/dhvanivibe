@@ -57,7 +57,7 @@ const Player: React.FC<any> = () => {
     progressRef.current!.max = songRef.current!.duration.toString();
     progressRef.current!.value = songRef.current!.currentTime.toString();
     setAudioReady(true)
-    songTimeUpdate()
+    // songTimeUpdate()
   }
   const handleSongPosition = (e: React.ChangeEvent<HTMLInputElement>) => {
     songRef.current?.play();
@@ -69,20 +69,22 @@ const Player: React.FC<any> = () => {
 
   const songTimeUpdate = () => {
     progressRef.current!.value = songRef.current!.currentTime.toString();
-    const currentSeconds = Math.floor(songRef.current!.currentTime % 60);
-    const currentMinutes = Math.floor(songRef.current!.currentTime / 60);
-    const durationSeconds = Math.floor(songRef.current!.duration % 60);
-    const durationMinutes = Math.floor(songRef.current!.duration / 60);
+    if (songRef.current?.duration && !isNaN(songRef.current.duration)) {
+      const currentSeconds = Math.floor(songRef.current!.currentTime % 60);
+      const currentMinutes = Math.floor(songRef.current!.currentTime / 60);
+      const durationSeconds = Math.floor(songRef.current!.duration % 60);
+      const durationMinutes = Math.floor(songRef.current!.duration / 60);
 
-    const formatTime = (minutes: number, seconds: number) => {
-      const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-      const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-      return `(${formattedMinutes}:${formattedSeconds})`;
-    };
+      const formatTime = (minutes: number, seconds: number) => {
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+        const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `(${formattedMinutes}:${formattedSeconds})`;
+      };
 
-    setCurrentTimeTrack(formatTime(currentMinutes, currentSeconds));
-    setCurrentTimeDuration(formatTime(durationMinutes, durationSeconds));
-  }
+      setCurrentTimeTrack(formatTime(currentMinutes, currentSeconds));
+      setCurrentTimeDuration(formatTime(durationMinutes, durationSeconds));
+    }
+  };
   useEffect(() => {
     if (audioSrc.length > 0) {
       if (songRef.current?.paused === false) {
