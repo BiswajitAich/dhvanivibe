@@ -15,8 +15,9 @@ export async function GET(request: NextRequest) {
             const data = await res.json()
             console.log("server data fetched:", data + `${process.env.NEXT_PUBLIC_API1}/songData?id=${songId}`)
             return data;
-
+            
         } catch (error) {
+            console.log("server data fetched:",`${process.env.NEXT_PUBLIC_API1}/songData?id=${songId}`)
             console.log("EEEEEEEEEEEEEEEEEEEEEEEEE", error)
             return null
         }

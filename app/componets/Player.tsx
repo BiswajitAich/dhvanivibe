@@ -53,7 +53,11 @@ const Player: React.FC<any> = () => {
   };
 
   const handleMeatData = () => {
+    songRef.current!.play();
+    progressRef.current!.max = songRef.current!.duration.toString();
     progressRef.current!.value = songRef.current!.currentTime.toString();
+    setAudioReady(true)
+    songTimeUpdate()
   }
   const handleSongPosition = (e: React.ChangeEvent<HTMLInputElement>) => {
     songRef.current?.play();
@@ -81,30 +85,16 @@ const Player: React.FC<any> = () => {
   }
   useEffect(() => {
     if (audioSrc.length > 0) {
-      sources();
-      songRef.current?.load
+      if (songRef.current?.paused === false) {
+        songRef.current?.pause();
+      }
+
+      songRef.current?.load();
+      songRef.current?.play();
     }
   }, [audioSrc])
 
-  const sources = () => {
-    for (let i = 0; i < audioSrc.length; i++) {
-      const audio = new Audio(audioSrc[i]);
-      audio.addEventListener("loadeddata", () => {
-        if (progressRef.current) {
-          progressRef.current.max = audio.duration.toString();
-        }
-        setAudioReady(true);
-      });
-      audio.addEventListener("error", () => {
-        if (i < audioSrc.length - 1) {
-          sources(); 
-        }
-      });
-      return <source key={i} src={audioSrc[i]} type="audio/mpeg" />;
-    }
-    return null;
-  };
-  
+
 
   return (
     <div className={style.playerBody}>
@@ -120,7 +110,8 @@ const Player: React.FC<any> = () => {
           onLoadedMetadata={handleMeatData}
           preload="metadata"
         >
-          {sources()}
+          {audioSrc[0] ? <source key={0} src={audioSrc[0]} type="audio/mpeg" /> : null}
+          {audioSrc[1] ? <source key={1} src={audioSrc[1]} type="audio/mpeg" /> : null}
         </audio>
       )}
 
