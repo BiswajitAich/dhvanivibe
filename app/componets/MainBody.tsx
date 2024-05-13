@@ -5,10 +5,13 @@ import SongContextProvider from "./context/SongContextProvider"
 import Player from "./Player"
 import Image from "next/image"
 import music_girl from "@/public/music-girl.webp"
-import { useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import Trending from "./(collections)/Trending"
 import OldIsGold from "./(collections)/OldIsGold"
 import Footer from "./Footer"
+import LatestBengali from "./(collections)/LatestBengali"
+import Bhakti from "./(collections)/Bhakti"
+import TopUpdates from "./(collections)/TopUpdates"
 
 const MainBody: React.FC = () => {
     const [message, setMessage] = useState<string>("");
@@ -68,40 +71,45 @@ const MainBody: React.FC = () => {
     }
     return (
         <main className={style.main}>
-                <SongContextProvider>
-                    <div className={style.showPice} />
-                    <div className={style.m_b1}>
-                        <div className={style.m_b2}
-                            ref={elementRef}
-                            onMouseMove={(e) => rotateElement(e)}
-                            onMouseLeave={hendleMouseLeave}
+            <SongContextProvider>
+                <div className={style.showPice} />
+                <div className={style.m_b1}>
+                    <div className={style.m_b2}
+                        ref={elementRef}
+                        onMouseMove={(e) => rotateElement(e)}
+                        onMouseLeave={hendleMouseLeave}
+                    >
+                        <div className={style.m_b2_1}>
+                            <Image src={music_girl} height={600} alt="music" />
+                        </div>
+                        <div className={style.m_b2_2}
+
                         >
-                            <div className={style.m_b2_1}>
-                                <Image src={music_girl} height={600} alt="music" />
-                            </div>
-                            <div className={style.m_b2_2}
+                            <div className={style.m_b2_2_1}
 
+                                style={{
+                                    transform: `perspective(1000px) rotateX(${offsetY}deg) rotateY(${offsetX}deg)`
+                                }}
                             >
-                                <div className={style.m_b2_2_1}
-
-                                    style={{
-                                        transform: `perspective(1000px) rotateX(${offsetY}deg) rotateY(${offsetX}deg)`
-                                    }}
-                                >
-                                    <p>Free Music Streaming App</p>
-                                    <span>no {message}|</span>
-                                </div>
+                                <p>Free Music Streaming App</p>
+                                <span>no {message}|</span>
                             </div>
                         </div>
                     </div>
+                </div>
+                <Suspense fallback={<p>Loading...</p>}>
                     <Trending />
+                    <TopUpdates />
+                    <LatestBengali />
                     <OldIsGold />
+                    <Bhakti />
                     <Footer />
-                    {/* <div className={style.contain}>
+                </Suspense>
+                {/* <div className={style.contain}>
                 </div> */}
-                    {/* <SearchSong /> */}
-                    <Player />
-                </SongContextProvider>
+                {/* <SearchSong /> */}
+                <Player />
+            </SongContextProvider>
         </main>
     )
 }

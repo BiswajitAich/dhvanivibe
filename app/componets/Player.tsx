@@ -150,6 +150,7 @@ const Player: React.FC<any> = () => {
             type="range"
             onChange={(e) => handleSongPosition(e)}
             className={!audioReady ? style.hide : ""}
+            aria-label="audio progress bar"
           />
         </div>
         <div className={style.playBtns}>
