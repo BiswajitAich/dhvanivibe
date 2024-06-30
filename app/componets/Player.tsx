@@ -4,10 +4,12 @@ import style from "@/app/css/player.module.css";
 import Image from "next/image";
 import { SongContext } from "./context/SongContextProvider";
 import noImage from '@/public/no-image.webp'
+// import PlayerScreen from "./playerScreen";
 
 const Player: React.FC<any> = () => {
   const [audioSrc, setAudioSrc] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [displayPlayerScreen, setDisplayPlayerScreen] = useState<boolean>(false);
   const [audioReady, setAudioReady] = useState<boolean>(false);
   const [currentTimeTrack, setCurrentTimeTrack] = useState<string>("(00:00)");
   const [currentTimeDuration, setCurrentTimeDuration] = useState<string>("(00:00)");
@@ -96,9 +98,21 @@ const Player: React.FC<any> = () => {
     }
   }, [audioSrc])
 
+  const handleDisplayPlayerScreen = () => {
+    setDisplayPlayerScreen(!displayPlayerScreen)
+  }
 
-
-  return (
+  return (<>
+    {
+      displayPlayerScreen ?
+        <div className={style.playerScreen}>
+          <div className={style.playerScreenHeader}>
+            <button type="button" onClick={handleDisplayPlayerScreen}>&#10148;</button>
+          </div>
+          <PlayerScreen data={currentSongData} />
+        </div>
+        : null
+    }
     <div className={style.playerBody}>
 
       {audioSrc.length > 0 && (
@@ -116,14 +130,22 @@ const Player: React.FC<any> = () => {
           {audioSrc[1] ? <source key={1} src={audioSrc[1]} type="audio/mpeg" /> : null}
         </audio>
       )}
+{/* 
+      <button
+        onClick={handleDisplayPlayerScreen}
+        className={style.displayPlayerScreen}>
+        &#10148;
+      </button> */}
 
-      {currentSongData?.img ?
-        <Image className={style.image}
-          src={currentSongData?.img || noImage}
-          height={50}
-          width={50}
-          // objectFit="cover"
-          alt={currentSongData?.name || "no image"} />
+      {currentSongData?.img && !displayPlayerScreen ?
+        <button onClick={handleDisplayPlayerScreen} className={style.image}>
+          <Image
+            src={currentSongData?.img || noImage}
+            height={50}
+            width={50}
+            // objectFit="cover"
+            alt={currentSongData?.name || "no image"} />
+        </button>
         : null
       }
 
@@ -156,8 +178,25 @@ const Player: React.FC<any> = () => {
         </div>
       </div>
     </div>
-
+  </>
   );
 };
 
 export default Player;
+
+
+const PlayerScreen = ({ data }: { data: any }) => {
+  return (
+    <div className={style.songImage}>
+      <div>
+        <Image
+          height={200}
+          width={200}
+          src={data?.img.replace(/(\d+)\.jpg$/, "4.jpg") || noImage}
+          // objectFit="cover"
+          alt={data?.name || "no image"}
+        />
+      </div>
+    </div>
+  );
+}
