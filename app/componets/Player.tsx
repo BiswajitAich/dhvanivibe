@@ -6,6 +6,7 @@ import { SongContext } from "./context/SongContextProvider";
 import noImage from '@/public/no-image.webp'
 import volMute from '@/public/volume-icon-mute.png'
 import vol from '@/public/volume-icon.png'
+// import { useRouter } from "next/navigation";
 // import PlayerScreen from "./playerScreen";
 
 const Player: React.FC<any> = () => {
@@ -105,15 +106,19 @@ const Player: React.FC<any> = () => {
     setDisplayPlayerScreen(!displayPlayerScreen)
   }
 
+  useEffect(() => {
+    if (displayPlayerScreen) document.documentElement.style.overflowY = 'hidden'
+    else document.documentElement.style.overflowY = 'auto'
+  }, [displayPlayerScreen])
   const handleDataFromChild = (data: number) => {
     setVolumeProgress(data);
   };
 
-  useEffect(()=>{
-    if(songRef.current){
+  useEffect(() => {
+    if (songRef.current) {
       songRef.current.volume = Number(volumeProgress);
     }
-  },[volumeProgress])
+  }, [volumeProgress])
 
   return (<>
     {
@@ -206,6 +211,7 @@ interface PlayerScreenProps {
 const PlayerScreen: React.FC<PlayerScreenProps> = ({ data, volumeProgress, sendDataToParent }) => {
   const [progress, setProgress] = useState<number>(volumeProgress);
   const svgRef = useRef<SVGSVGElement>(null);
+  // const router = useRouter();
 
   useEffect(() => {
     sendDataToParent(progress);
@@ -255,7 +261,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({ data, volumeProgress, sendD
 
   return (
     <div className={style.songImage}>
-      <Image src={volMute} height={30} width={30} alt="mute" className={style.volMute}/>
+      <Image src={volMute} height={30} width={30} alt="mute" className={style.volMute} />
       <div>
         <Image
           height={200}
@@ -286,8 +292,8 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({ data, volumeProgress, sendD
           onTouchEnd={startTracking}
         />
       </svg>
-      
-          <Image src={vol} height={30} width={30} alt="high volume" className={style.vol}/>
+
+      <Image src={vol} height={30} width={30} alt="high volume" className={style.vol} />
     </div>
   );
 };
