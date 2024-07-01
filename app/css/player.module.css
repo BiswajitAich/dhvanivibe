@@ -202,14 +202,16 @@
     border-radius: 50%;
     padding: 8px;
     box-shadow: 0 0 5px 4px #ff7fbf,
-     0 0 5px 8px #f8e0c4;
+        0 0 5px 8px #f8e0c4;
     margin-left: 2%;
     height: 50px;
     width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
 }
+
 .image img {
     border-radius: 50%;
     animation: player_rotate___1Ac9 5s linear infinite;
@@ -267,7 +269,7 @@
     text-shadow: -2px -2px 2px black;
 }
 
-.songImage{
+.songImage {
     height: auto;
     width: 100%;
     display: flex;
@@ -276,10 +278,62 @@
     padding: 25px 0;
 }
 
-.songImage div{
+.songImage div {
+    position: absolute;
     height: 200px;
     width: 200px;
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 4px 4px 10px black, -2px -2px 10px oldlace;
+}
+
+.songImage svg {
+    transform: rotateY(180deg);
+}
+
+.songImage circle {
+    fill: none;
+    filter: drop-shadow(0px 0px 4px rgba(225, 225, 225, 0.5));
+}
+
+.songImage circle:nth-child(1) {
+    stroke: #0f0f0f;
+    stroke-width: 10px;
+    stroke-dasharray: 440;
+    transform-origin: center;
+    stroke-linecap: round;
+}
+
+.songImage circle:nth-child(2) {
+    stroke: #501f9b;
+    stroke-width: 10px;
+    stroke-dasharray: 880;
+    transform-origin: center;
+    stroke-linecap: round;
+    stroke-dashoffset: calc(880 - (440 * 50) / 100);
+}
+
+.songImage circle:nth-child(3) {
+    stroke: #f2f0f400;
+    stroke-width: 10px;
+    stroke-dasharray: 440;
+    transform-origin: center;
+    stroke-linecap: round;
+    cursor: pointer;
+}
+
+.volMute {
+    color: transparent;
+    position: relative;
+    right: -48px;
+    bottom: 35px;
+    filter: drop-shadow(0px 0px 3px white);
+}
+
+.vol {
+    color: transparent;
+    position: relative;
+    bottom: 32px;
+    left: -45px;
+    filter: drop-shadow(0px 0px 3px white);
 }
