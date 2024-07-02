@@ -214,7 +214,7 @@
 
 .image img {
     border-radius: 50%;
-    animation: player_rotate___1Ac9 5s linear infinite;
+    animation: rotate 5s linear infinite;
     border: none;
 }
 
@@ -251,7 +251,7 @@
     min-height: 100dvh;
     position: fixed;
     top: 0;
-    background: linear-gradient(0deg, #000000f2, rgb(32 80 96 / 82%));
+    background: linear-gradient(180deg, #000000db, rgb(32 80 96 / 50%));
     backdrop-filter: blur(10px);
 }
 
@@ -280,47 +280,57 @@
 
 .songImage div {
     position: absolute;
-    height: 200px;
-    width: 200px;
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 4px 4px 10px black, -2px -2px 10px oldlace;
+    width: 50dvw;
+    max-width: 200px;
+    max-height: 200px;
+    height: 50dvw;
+}
+.songImage div img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .songImage svg {
     transform: rotateY(180deg);
+    width: 100dvw;
+    height: 100dvw;
+    max-width: 340px;
+    max-height: 340px;
 }
 
 .songImage circle {
     fill: none;
     filter: drop-shadow(0px 0px 4px rgba(225, 225, 225, 0.5));
+    stroke-width: 12px;
+    stroke-dasharray: 440;
+    transform-origin: center;
+    stroke-linecap: round;
+    cx: 170;
+    cy: 170;
+    r: 140;
 }
 
 .songImage circle:nth-child(1) {
     stroke: #0f0f0f;
-    stroke-width: 10px;
     stroke-dasharray: 440;
-    transform-origin: center;
-    stroke-linecap: round;
 }
 
 .songImage circle:nth-child(2) {
     stroke: #501f9b;
-    stroke-width: 10px;
     stroke-dasharray: 880;
-    transform-origin: center;
-    stroke-linecap: round;
     stroke-dashoffset: calc(880 - (440 * 50) / 100);
 }
 
 .songImage circle:nth-child(3) {
     stroke: #f2f0f400;
-    stroke-width: 10px;
     stroke-dasharray: 440;
-    transform-origin: center;
-    stroke-linecap: round;
     cursor: pointer;
 }
+
 
 .volMute {
     color: transparent;
@@ -336,4 +346,88 @@
     bottom: 32px;
     left: -45px;
     filter: drop-shadow(0px 0px 3px white);
+}
+
+.titles{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 14px;
+}
+.titles p{
+    padding-left: 12px;
+    padding-right: 12px;
+    text-align: center;
+}
+.titles p:nth-child(1){
+    font-size: xx-large;
+    font-family: ui-sans-serif;
+    filter: drop-shadow(0px 0px 4px black);
+    letter-spacing: 0.1rem;
+    color: #ffbfac;
+}
+.titles p:nth-child(2){
+    font-size: small;
+    font-family: cursive;
+    filter: drop-shadow(0px 0px 4px white);
+    letter-spacing: 0.2rem;
+    color: #faebd7b0;
+}
+@media screen and (max-width: 375px) {
+    .songImage svg {
+        min-width: 100dvw;
+        min-height: 100dvw;
+    }
+    .songImage circle {
+        cx: 188;
+        cy: 188;
+        r: 124;
+    } 
+    .songImage circle:nth-child(1) {
+        stroke-dasharray: 390;
+    }
+    
+    .songImage circle:nth-child(2) {
+        stroke-dasharray: 830;
+        stroke-dashoffset: calc(830 - (390 * 50) / 100);
+    }
+    
+    .songImage circle:nth-child(3) {
+        stroke-dasharray: 390;
+    }
+
+    .vol{
+        left: -75px;
+    }
+    .volMute{
+        right: -75px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .songImage circle {
+        cx: 165;
+        cy: 165;
+        r: 110;
+    } 
+    .songImage circle:nth-child(1) {
+        stroke-dasharray: 350;
+    }
+    
+    .songImage circle:nth-child(2) {
+        stroke-dasharray: 790;
+        stroke-dashoffset: calc(790 - (350 * 50) / 100);
+    }
+    
+    .songImage circle:nth-child(3) {
+        stroke-dasharray: 350;
+    }
+    .vol{
+        left: -68px;
+    }
+    .volMute{
+        right: -60px;
+    }
 }

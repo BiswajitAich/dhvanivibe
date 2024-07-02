@@ -4,15 +4,13 @@ import style from "@/app/css/player.module.css";
 import Image from "next/image";
 import { SongContext } from "./context/SongContextProvider";
 import noImage from '@/public/no-image.webp'
-import volMute from '@/public/volume-icon-mute.png'
-import vol from '@/public/volume-icon.png'
 // import { useRouter } from "next/navigation";
-// import PlayerScreen from "./playerScreen";
+import PlayerScreen from "./PlayerScreen";
 
 const Player: React.FC<any> = () => {
   const [audioSrc, setAudioSrc] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [volumeProgress, setVolumeProgress] = useState<number>(0.50);
+  const [volumeProgress, setVolumeProgress] = useState<number>(0.80);
   const [displayPlayerScreen, setDisplayPlayerScreen] = useState<boolean>(false);
   const [audioReady, setAudioReady] = useState<boolean>(false);
   const [currentTimeTrack, setCurrentTimeTrack] = useState<string>("(00:00)");
@@ -155,7 +153,7 @@ const Player: React.FC<any> = () => {
         &#10148;
       </button> */}
 
-      {currentSongData?.img || noImage && !displayPlayerScreen ?
+      {currentSongData?.img && !displayPlayerScreen ?
         <button onClick={handleDisplayPlayerScreen} className={style.image}>
           <Image
             src={currentSongData?.img || noImage}
@@ -202,98 +200,3 @@ const Player: React.FC<any> = () => {
 
 export default Player;
 
-interface PlayerScreenProps {
-  data: any;
-  volumeProgress: number
-  sendDataToParent: (data: any) => void;
-}
-
-const PlayerScreen: React.FC<PlayerScreenProps> = ({ data, volumeProgress, sendDataToParent }) => {
-  const [progress, setProgress] = useState<number>(volumeProgress);
-  const svgRef = useRef<SVGSVGElement>(null);
-  // const router = useRouter();
-
-  useEffect(() => {
-    sendDataToParent(progress);
-  }, [progress])
-
-  const handleMousePosition = (e: MouseEvent | TouchEvent) => {
-    let x, y;
-    if (!svgRef.current) return;
-    const rect = svgRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    if (e.type === "touchmove" || e.type === "touchstart") {
-      const touchEvent = e as TouchEvent;
-      x = touchEvent.touches[0].clientX - centerX;
-      y = touchEvent.touches[0].clientY - centerY;
-    } else if (e.type === "mousemove" || e.type === "mousedown") {
-      const mouseEvent = e as MouseEvent;
-      x = mouseEvent.clientX - centerX;
-      y = mouseEvent.clientY - centerY;
-    }
-
-    const angleRad = Math.atan2(Number(y), Number(x));
-    let angleDeg = angleRad * (180 / Math.PI);
-    angleDeg = angleDeg < 0 ? angleDeg + 360 : angleDeg;
-    if (angleDeg >= 0 && angleDeg <= 180) {
-      const progressPer = (angleDeg / 180);
-      setProgress(1 - progressPer);
-      // console.log("Progress percentage:", 1 - progressPer);
-    }
-  };
-
-  const startTracking = (e: React.MouseEvent<SVGCircleElement> | React.TouchEvent<SVGCircleElement> | any) => {
-    document.addEventListener("mousemove", handleMousePosition);
-    document.addEventListener("touchmove", handleMousePosition);
-    document.addEventListener("mouseup", stopTracking);
-    document.addEventListener("touchend", stopTracking);
-    handleMousePosition(e);
-  };
-
-  const stopTracking = () => {
-    document.removeEventListener("mousemove", handleMousePosition);
-    document.removeEventListener("touchmove", handleMousePosition);
-    document.removeEventListener("mouseup", stopTracking);
-    document.removeEventListener("touchend", stopTracking);
-  };
-
-  return (
-    <div className={style.songImage}>
-      <Image src={volMute} height={30} width={30} alt="mute" className={style.volMute} />
-      <div>
-        <Image
-          height={200}
-          width={200}
-          src={data?.img.replace(/(\d+)\.jpg$/, "4.jpg") || noImage}
-          alt={data?.name || "no image"}
-        />
-      </div>
-      <svg width={340} height={340} ref={svgRef}>
-        <circle cx={170} cy={170} r={140} className={style.circle1} />
-        <circle
-          cx={170}
-          cy={170}
-          r={140}
-          className={style.circle2}
-          style={{
-            strokeDashoffset: `calc(880 - (880 * (${progress}/2)) )`
-          }}
-        />
-        <circle
-          cx={170}
-          cy={170}
-          r={140}
-          className={style.circle3}
-          onMouseDown={startTracking}
-          onTouchStart={startTracking}
-          onMouseLeave={stopTracking}
-          onTouchEnd={startTracking}
-        />
-      </svg>
-
-      <Image src={vol} height={30} width={30} alt="high volume" className={style.vol} />
-    </div>
-  );
-};
