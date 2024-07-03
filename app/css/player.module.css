@@ -253,11 +253,11 @@
     top: 0;
     background: linear-gradient(180deg, #000000db, rgb(32 80 96 / 50%));
     backdrop-filter: blur(10px);
+    z-index: 19;
 }
 
 .playerScreenHeader {
     border: none;
-    padding-bottom: 20px;
 }
 
 .playerScreenHeader button {
@@ -275,7 +275,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 25px 0;
+    padding-bottom: 25px;
 }
 
 .songImage div {

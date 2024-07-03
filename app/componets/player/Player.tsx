@@ -2,10 +2,11 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import style from "@/app/css/player.module.css";
 import Image from "next/image";
-import { SongContext } from "./context/SongContextProvider";
+import { SongContext } from "../context/SongContextProvider"; 
 import noImage from '@/public/no-image.webp'
 // import { useRouter } from "next/navigation";
 import PlayerScreen from "./PlayerScreen";
+import AudioProgress from "./AudioProgress";
 
 const Player: React.FC<any> = () => {
   const [audioSrc, setAudioSrc] = useState<string[]>([]);
@@ -18,7 +19,7 @@ const Player: React.FC<any> = () => {
   const [songData, setSongData] = useState<any>();
   const { currentSongData } = useContext<any>(SongContext);
   const songRef = useRef<HTMLAudioElement>(null);
-  const progressRef = useRef<HTMLInputElement>(null);
+  const [progressRef, setProgressRef] = useState<React.RefObject<HTMLInputElement>>(useRef(null));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,11 +65,11 @@ const Player: React.FC<any> = () => {
     // songTimeUpdate()
   }
   const handleSongPosition = (e: React.ChangeEvent<HTMLInputElement>) => {
-    songRef.current?.play();
-    songRef.current!.currentTime = Number(e.target.value);
-    progressRef.current!.value = e.target.value
-    // console.log(songRef.current?.currentTime);
-    // console.log(Number(e.target.value));
+    if (songRef.current) {
+      songRef.current.pause();
+      songRef.current.currentTime = Number(e.target.value);
+      songRef.current.play();
+    }
   };
 
   const songTimeUpdate = () => {
@@ -117,6 +118,10 @@ const Player: React.FC<any> = () => {
       songRef.current.volume = Number(volumeProgress);
     }
   }, [volumeProgress])
+
+  const handleProgressRefChange = (ref: React.RefObject<HTMLInputElement>) => {
+    setProgressRef(ref);
+  };
 
   return (<>
     {
@@ -175,13 +180,10 @@ const Player: React.FC<any> = () => {
               <p>{currentTimeDuration}</p>
             </div> : null
           }
-          <input
-            id={style.progress}
-            ref={progressRef}
-            type="range"
-            onChange={(e) => handleSongPosition(e)}
-            className={!audioReady ? style.hide : ""}
-            aria-label="audio progress bar"
+          <AudioProgress
+            audioReady={audioReady}
+            handleSongPosition={handleSongPosition}
+            handleProgressRefChange={handleProgressRefChange}
           />
         </div>
         <div className={style.playBtns}>

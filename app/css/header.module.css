@@ -1,13 +1,14 @@
-.header{
+.header {
     width: 100%;
-    height: auto;
+    height: 85px;
+    position: relative;
 }
 
-.headDiv{
+.headDiv {
     background: linear-gradient(180deg, #007f63, transparent);
-    position: fixed;
     right: 0;
     top: 0;
+    position: absolute;
     width: 85%;
     height: 50px;
     overflow: hidden;
@@ -16,11 +17,32 @@
     border-bottom-left-radius: 50px;
     text-align: center;
 }
-.headDiv h1{
+
+.headDiv h1 {
     font-size: 1.5rem;
 }
-.headDiv h3{
+
+.headDiv2 {
+    background: linear-gradient(180deg, rgba(6, 70, 66), rgba(8, 39, 49, 0.80));
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 40px;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 5px black;
+}
+
+.headDiv h3,
+.headDiv2 h3 {
     font-size: 1rem;
     color: rgb(255, 107, 211);
-    text-shadow: 1px 1px 5px rgb(0, 0, 0);
+    text-shadow: 0px 0px 6px rgba(255, 107, 211, 0.676);
 }
+
+.headDiv2 h3 {
+    font-size: 1.3rem;
+}
+

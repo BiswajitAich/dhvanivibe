@@ -6,29 +6,41 @@ import playBtn from "@/public/play-button.webp"
 import pauseBtn from "@/public/pause-button.webp"
 import { SongContext } from "../context/SongContextProvider";
 import noImage from "@/public/no-image.webp"
-
+import useIntersectionObserver from "../js/useIntersectionObserver";
+import LoadingComponent from "../LoadingComponent";
 
 const TrendingClient = ({ fetchLoc, h }: { fetchLoc: any, h: string }) => {
     const [viralsData, setViralsData] = useState<any>()
     const [hoveredCard, setHoveredCard] = useState<boolean | Key>(false)
     const [playing, setPlaying] = useState<boolean | Key>(false)
     const { setCurrentSongData } = useContext<any>(SongContext)
+    const [ref, isIntersecting] = useIntersectionObserver({
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+    });
+    const [loading, setLoading] = useState(true);
+    const [hasFetched, setHasFetched] = useState(false);
 
     useEffect(() => {
-
         const fetchViralsData = async () => {
             try {
                 const res = await fetch(`/api/fetchFeatured?location=${fetchLoc}`)
                 const data = await res.json()
                 console.log(data);
                 setViralsData(data)
+                setHasFetched(true);
             } catch (error) {
                 console.error("Error fetching viral data:", error);
+            } finally {
+                setLoading(false);
             }
-
         }
-        fetchViralsData();
-    }, []);
+        if (isIntersecting && !hasFetched) {
+            fetchViralsData();
+        }
+    }, [isIntersecting]);
+
     const handleMouseEnter = (index: Key) => {
         setHoveredCard(index);
     };
@@ -43,8 +55,8 @@ const TrendingClient = ({ fetchLoc, h }: { fetchLoc: any, h: string }) => {
         console.log(viralsData[Number(idx)]);
 
     }
-    return (<>
-        {viralsData ? <>
+    return (<div ref={ref}>
+        {viralsData && !loading ? <>
             <h2 className={style.h}>{h}</h2>
             <div className={style.viral_div}>
                 {viralsData?.map((trend: any, idx: Key) => (
@@ -80,8 +92,8 @@ const TrendingClient = ({ fetchLoc, h }: { fetchLoc: any, h: string }) => {
                     </div>
                 ))}
             </div>
-        </> : null}
-    </>);
+        </> : <LoadingComponent />}
+    </div>);
 }
 
 export default TrendingClient;
