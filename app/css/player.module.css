@@ -13,7 +13,7 @@
     row-gap: 5px;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    z-index: 100;
+    z-index: 9999;
     border: none;
     bottom: 0;
     flex-wrap: nowrap;

@@ -1,0 +1,146 @@
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.div1 {
+    width: 80dvw;
+    height: 40dvh;
+    position: relative;
+}
+
+.div1 img {
+    color: transparent;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.div1 p {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    font-size: 2rem;
+    font-family: cursive;
+    font-weight: 600;
+    color: gold;
+    filter: drop-shadow(2px 2px 4px black) drop-shadow(-2px -2px 4px black);
+    text-wrap: nowrap;
+}
+
+.list {
+    position: relative;
+    background: linear-gradient(180deg, black, transparent);
+    z-index: 999;
+    min-height: 100dvh;
+    min-width: 80dvw;
+    top: -50px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    padding-bottom: 50px;
+}
+.list p{
+    font-family: fangsong;
+    font-weight: 600;
+    top: 58px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.heartContainer {
+    background: black;
+    max-height: 200px;
+    max-width: 200px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px black;
+    top: -100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.heart {
+    max-height: 70px;
+    max-width: 70px;
+    background: #f20044;
+    transform: rotate(-45deg);
+    box-shadow: -10px 10px 40px #f20044;
+    animation: heart 1.5s linear infinite;
+}
+
+@keyframes heart {
+
+    0%,
+    100% {
+        transform: rotate(-45deg) scale(0.9);
+    }
+
+    50% {
+        transform: rotate(-45deg) scale(1);
+    }
+}
+
+.heart::before {
+    content: '';
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    background: #f20044;
+    top: -40%;
+    border-radius: 50px;
+    box-shadow: -10px -10px 40px #f20044;
+
+}
+
+.heart::after {
+    content: '';
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    background: #f20044;
+    right: -40%;
+    border-radius: 50px;
+    box-shadow: 10px 10px 40px #f20044;
+}
+
+.player{
+    width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+}
+
+@media screen and (max-width: 425px) {
+    .div1 {
+        width: 100%;
+    }
+
+    .list {
+        min-width: 100%;
+    }
+
+    .heartContainer {
+        max-height: 150px;
+        max-width: 150px;
+        top: -77px;
+    }
+
+    .heart {
+        max-height: 50px;
+        max-width: 50px;
+    }
+
+    .heart::before,
+    .heart::after {
+        height: 50px;
+        width: 50px;
+    }
+}
