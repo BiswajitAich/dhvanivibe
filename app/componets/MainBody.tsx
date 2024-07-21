@@ -2,22 +2,24 @@
 import style from "@/app/css/mainBody.module.css"
 // import SearchSong from "./SearchSong"
 // import Player from "./player/Player"
+import dynamic from "next/dynamic"
 import { Suspense, useContext, useEffect, useState } from "react"
-import Trending from "./(collections)/Trending"
-import OldIsGold from "./(collections)/OldIsGold"
-import Footer from "./Footer"
-import LatestBengali from "./(collections)/LatestBengali"
-import Bhakti from "./(collections)/Bhakti"
-import TopUpdates from "./(collections)/TopUpdates"
-import Hero from "./Hero"
-import LoadingComponent from "./LoadingComponent"
-import SavedList from "../SavedList/page"
+const Trending = dynamic(() => import("./(collections)/Trending"))
+const OldIsGold = dynamic(() => import("./(collections)/OldIsGold"));
+const Footer = dynamic(() => import("./Footer"));
+const LatestBengali = dynamic(() => import("./(collections)/LatestBengali"));
+const Bhakti = dynamic(() => import("./(collections)/Bhakti"));
+const TopUpdates = dynamic(() => import("./(collections)/TopUpdates"));
+const Hero = dynamic(() => import("./Hero"));
+const LoadingComponent = dynamic(() => import("./LoadingComponent"));
+const SavedList = dynamic(() => import("../SavedList/page"));
+const TopSongs = dynamic(() => import("../(pages)/TopSongs"));
+const TrendingSongs = dynamic(() => import("../(pages)/TrendingSongs"));
+const BhaktiSongs = dynamic(() => import("../(pages)/BhaktiSongs"));
+const LatestBengaliSongs = dynamic(() => import("../(pages)/LatestBengaliSongs"));
+const OldIsGoldSongs = dynamic(() => import("../(pages)/OldIsGoldSongs"));
 import { PagePathContext } from "./context/PathContextProvider"
-import TopSongs from "../(pages)/Topsongs/page"
-import TrendingSongs from "../(pages)/TrendingSongs/page"
-import BhaktiSongs from "../(pages)/BhaktiSongs/page"
-import LatestBengaliSongs from "../(pages)/LatestBengaliSongs/page"
-import OldIsGoldSongs from "../(pages)/OldIsGoldSongs/page"
+
 interface Props {
     currentView: string
 }
