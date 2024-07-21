@@ -1,5 +1,5 @@
 "use client"
-import { Key, useContext, useEffect, useState } from "react";
+import React, { Key, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import style from "@/app/css/trending.module.css"
 import playBtn from "@/public/play-button.webp"
@@ -9,55 +9,71 @@ import noImage from "@/public/no-image.webp"
 import useIntersectionObserver from "../js/useIntersectionObserver";
 import LoadingComponent from "../LoadingComponent";
 import useIndexedDB from "../js/useIndexedDB";
+import { PagePathContext } from "../context/PathContextProvider";
 
-interface data {
+interface Data {
     img: string,
     name: string,
     singer: string,
     songId: string
 }
-const TrendingClient = ({ fetchLoc, h }: { fetchLoc: any, h: string }) => {
+interface Props {
+    data: any,
+    h: string,
+    path: string,
+    handleIntersection: (e: boolean) => void
+}
+
+const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection }) => {
     const [viralsData, setViralsData] = useState<any>()
     const [hoveredCard, setHoveredCard] = useState<boolean | Key>(false)
     const [playing, setPlaying] = useState<boolean | Key>(false)
     const { setCurrentSongData } = useContext<any>(SongContext)
+    const { setPagePath } = useContext<any>(PagePathContext)
     const [ref, isIntersecting] = useIntersectionObserver({
         root: null,
         rootMargin: "0px",
         threshold: 0.1,
     });
-    const [loading, setLoading] = useState(true);
-    const [hasFetched, setHasFetched] = useState(false);
+    // const [loading, setLoading] = useState(true);
+    // const [hasFetched, setHasFetched] = useState(false);
     const [isClicked, setIsClicked] = useState<{ [key: string]: boolean }>({});
     const [hasInList, setHasInList] = useState<{ [key: string]: boolean }>({});
     const { addItem, getAllItems, deleteItem, logAllItems, itemExists } = useIndexedDB('songDatabase', 'likedSongs');
+    useEffect(() => {
+        setViralsData(data)
+    }, [data])
 
     useEffect(() => {
-        const fetchViralsData = async () => {
-            try {
-                const res = await fetch(`/api/fetchFeatured?location=${fetchLoc}`)
-                const data = await res.json()
-                // console.log(data);
-                console.log(fetchLoc);
-                setViralsData(data)
-                setHasFetched(true);
+        if (isIntersecting) handleIntersection(isIntersecting);
+    }, [isIntersecting, handleIntersection]);
 
-                const songStatusPromises = data.map(async (song: data) => ({
-                    [song.songId]: await itemExists(song.songId)
-                }));
-                const songStatus = await Promise.all(songStatusPromises);
-                const songStatueMap = Object.assign({}, ...songStatus);
-                setHasInList(songStatueMap);
-            } catch (error) {
-                console.error("Error fetching viral data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        if (isIntersecting && !hasFetched) {
-            fetchViralsData();
-        }
-    }, [isIntersecting, hasFetched, itemExists, fetchLoc]);
+    // useEffect(() => {
+    //     const fetchViralsData = async () => {
+    //         try {
+    //             const res = await fetch(`/api/fetchFeatured?location=${fetchLoc}`)
+    //             // const data = await res.json()
+    //             // console.log(data);
+    //             console.log(fetchLoc);
+    //             setViralsData(data)
+    //             setHasFetched(true);
+
+    //             const songStatusPromises = data.map(async (song: data) => ({
+    //                 [song.songId]: await itemExists(song.songId)
+    //             }));
+    //             const songStatus = await Promise.all(songStatusPromises);
+    //             const songStatueMap = Object.assign({}, ...songStatus);
+    //             setHasInList(songStatueMap);
+    //         } catch (error) {
+    //             console.error("Error fetching viral data:", error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     }
+    //     if (isIntersecting && !hasFetched) {
+    //         fetchViralsData();
+    //     }
+    // }, [isIntersecting, hasFetched, itemExists, fetchLoc]);
 
     const handleMouseEnter = (index: Key) => {
         setHoveredCard(index);
@@ -69,11 +85,11 @@ const TrendingClient = ({ fetchLoc, h }: { fetchLoc: any, h: string }) => {
 
     const playPause = (idx: Key) => {
         playing === idx ? setPlaying(false) : setPlaying(idx);
-        setCurrentSongData((prev: any) => prev = viralsData[Number(idx)])
-        console.log("viralsData[Number(idx)]",viralsData[Number(idx)]);
+        setCurrentSongData(viralsData[Number(idx)]);
+        console.table("viralsData[Number(idx)]", viralsData[Number(idx)]);
     }
 
-    const handleAddSong = async (d: data) => {
+    const handleAddSong = async (d: Data) => {
         if (await itemExists(d.songId)) {
             await deleteItem(d.songId);
             const newIsClicked = { ...isClicked, [d.songId]: false };
@@ -96,13 +112,19 @@ const TrendingClient = ({ fetchLoc, h }: { fetchLoc: any, h: string }) => {
         }
         await logAllItems()
     };
-
+    const handlePagePath = () => {
+        setPagePath(path)
+        console.log("setPagePath");
+    }
 
     return (<div ref={ref}>
-        {viralsData && !loading ? <>
-            <h2 className={style.h}>{h}</h2>
+        {viralsData ? <>
+            {/* {viralsData && !loading ? <> */}
+            <h2 className={style.h}>{h}
+                {path ? <button onClick={handlePagePath}><span>&#10148;</span></button> : null}
+            </h2>
             <div className={style.viral_div}>
-                {viralsData?.map((trend: data, idx: Key) => (
+                {viralsData?.map((trend: Data, idx: Key) => (
                     <div key={idx} className={style.viral_card}
                         onMouseEnter={() => handleMouseEnter(idx)}
                         onMouseLeave={() => handleMouseLeave()}

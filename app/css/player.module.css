@@ -1,10 +1,11 @@
-.topPosition0:hover {
+/* .topPosition0:hover {
     background-color: #007f639a;
-}
+} */
 
 .playerBody {
     position: fixed;
-    min-width: 100%;
+    /* min-width: 100%; */
+    width: 100%;
     height: auto;
     background-color: #94949488;
     border-top: 1px solid aliceblue;
@@ -253,7 +254,7 @@
     top: 0;
     background: linear-gradient(180deg, #000000db, rgb(32 80 96 / 50%));
     backdrop-filter: blur(10px);
-    z-index: 19;
+    z-index: 9999;
 }
 
 .playerScreenHeader {

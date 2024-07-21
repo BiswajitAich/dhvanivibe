@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useRef, useContext, useEffect } from "react";
 import style from "@/app/css/player.module.css";
-import styleh from '@/app/SavedList/css/card.module.css'
+// import styleh from '@/app/SavedList/css/card.module.css'
 import Image from "next/image";
 import { SongContext } from "../context/SongContextProvider";
 import noImage from '@/public/no-image.webp'
@@ -9,7 +9,8 @@ import noImage from '@/public/no-image.webp'
 import PlayerScreen from "./PlayerScreen";
 import AudioProgress from "./AudioProgress";
 
-const Player: React.FC<any> = ({sendToParent}) => {
+const Player: React.FC<any> = () => {
+// const Player: React.FC<any> = ({sendToParent}) => {
   const [audioSrc, setAudioSrc] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volumeProgress, setVolumeProgress] = useState<number>(0.80);
@@ -21,7 +22,7 @@ const Player: React.FC<any> = ({sendToParent}) => {
   const { currentSongData } = useContext<any>(SongContext);
   const songRef = useRef<HTMLAudioElement>(null);
   const [progressRef, setProgressRef] = useState<React.RefObject<HTMLInputElement>>(useRef(null));
-  const [displayList, setDisplayList] = useState<boolean>(false);
+  // const [displayList, setDisplayList] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +43,8 @@ const Player: React.FC<any> = ({sendToParent}) => {
     }
 
     fetchData()
+    console.log("currentSongData Player component");
+    
   }, [currentSongData])
 
 
@@ -125,10 +128,10 @@ const Player: React.FC<any> = ({sendToParent}) => {
   const handleProgressRefChange = (ref: React.RefObject<HTMLInputElement>) => {
     setProgressRef(ref);
   };
-  const handlelistDisplay = () => {
-    setDisplayList((prev:boolean)=>!prev)
-    sendToParent(displayList);
-  };
+  // const handlelistDisplay = () => {
+  //   setDisplayList((prev:boolean)=>!prev)
+  //   sendToParent(displayList);
+  // };
 
   return (<>
     {
@@ -206,7 +209,7 @@ const Player: React.FC<any> = ({sendToParent}) => {
 
 
 
-      <button
+      {/* <button
         className={styleh.heartContainer}
         style={{
           bottom: "10px", right: "10px", padding: "unset"
@@ -218,7 +221,7 @@ const Player: React.FC<any> = ({sendToParent}) => {
             background: 'white'
           }}
         />
-      </button>
+      </button> */}
 
     </div>
   </>

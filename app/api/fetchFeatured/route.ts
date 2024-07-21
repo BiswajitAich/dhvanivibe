@@ -11,9 +11,10 @@ export async function GET(req: NextRequest) {
             }
             // cache: "no-cache"
         })
+        const data = await res.json()
         console.log("called!!!!!");
         
-        return new NextResponse(JSON.stringify(await res.json()))
+        return new NextResponse(JSON.stringify(data))
     } catch (error) {
         return new NextResponse("500 error",{status: 500})
     }

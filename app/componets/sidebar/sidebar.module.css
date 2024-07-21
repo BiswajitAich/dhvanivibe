@@ -1,0 +1,74 @@
+.sideBar {
+    height: 100%;
+    z-index: 9999;
+    background: #0c021b;
+    min-width: 150px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: sticky;
+    top: 0;
+    padding: 5px;
+}
+
+.container button {
+    background-color: #122d3782;
+    border: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: medium;
+    font-family: cursive;
+    color: #007f63;
+}
+
+.close {
+    display: none;
+}
+
+.slideIn {
+    animation: slideIn 0.3s forwards;
+    display: block;
+}
+
+.slideOut {
+    animation: slideOut 0.3s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    /* .sideBar {
+        display: none;
+    } */
+
+    .close {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .close span {
+        transform: rotate(180deg);
+    }
+}

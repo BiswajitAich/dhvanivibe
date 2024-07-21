@@ -4,12 +4,19 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    margin-top: 80px;
 }
 
 .div1 {
-    width: 80dvw;
+    width: 80%;
     height: 40dvh;
     position: relative;
+}
+
+.div1x {
+    border-top-left-radius: 12px;
+    overflow: hidden;
+    border-top-right-radius: 12px;
 }
 
 .div1 img {
@@ -35,15 +42,15 @@
 .list {
     position: relative;
     background: linear-gradient(180deg, black, transparent);
-    z-index: 999;
     min-height: 100dvh;
-    min-width: 80dvw;
+    min-width: 80%;
     top: -50px;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
     padding-bottom: 50px;
 }
-.list p{
+
+.list p {
     font-family: fangsong;
     font-weight: 600;
     top: 58px;
@@ -110,7 +117,7 @@
     box-shadow: 10px 10px 40px #f20044;
 }
 
-.player{
+.player {
     width: 100%;
     height: auto;
     position: fixed;

@@ -3,11 +3,13 @@ import style from "@/app/css/mainBody.module.css"
 import Image from "next/image"
 import music_girl from "@/public/music-girl.webp"
 import { useEffect, useRef, useState } from "react"
+import Header from "./Header"
 
 const Hero = () => {
     const [message, setMessage] = useState<string>("");
     const [offsetX, setOffsetX] = useState<number>();
     const [offsetY, setOffsetY] = useState<number>();
+    const [topHeight, setTopHeight] = useState<number>(0);
     const elementRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const str1 = "MUSIC";
@@ -40,7 +42,7 @@ const Hero = () => {
             }
         }, 1000);
 
-            return () => clearInterval(interval);
+        return () => clearInterval(interval);
 
     }, []);
     const isElementInViewport = () => {
@@ -71,9 +73,24 @@ const Hero = () => {
         setOffsetX(0)
         setOffsetY(0)
     }
+    useEffect(() => {
+        const handleScroll = () => {
+
+            if (window.scrollY <= 85) {
+                setTopHeight(window.scrollY);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     return (
         <>
+            <Header topHeight={topHeight} />
             <div className={style.m_b1}>
                 <div className={style.m_b2}
                     ref={elementRef}

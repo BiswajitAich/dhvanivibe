@@ -3,6 +3,37 @@
     padding: 20px;
     background: repeating-linear-gradient(45deg, black, transparent 100px);
     color: #ffbfac;
+    position: relative;
+}
+
+.h button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    border: none;
+    padding: 5px;
+    background: black;
+    box-shadow: 0 0 6px rgb(138, 138, 138);
+    color: lightskyblue;
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+}
+
+.h button:hover {
+    color: #04a581;
+    background-color: #000000b3;
+}
+
+.h a {
+    font-size: small;
+    color: lightskyblue;
+}
+
+.h a:hover {
+    color: #04a581;
 }
 
 .viral_div {
@@ -145,6 +176,7 @@
 }
 
 @keyframes heart {
+
     0%,
     100% {
         transform: scale(1);
