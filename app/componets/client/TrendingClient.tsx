@@ -26,10 +26,11 @@ interface Props {
 
 const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection }) => {
     const [viralsData, setViralsData] = useState<any>()
+    const [fetched, setFetched] = useState<boolean>(false)
     const [hoveredCard, setHoveredCard] = useState<boolean | Key>(false)
     const [playing, setPlaying] = useState<boolean | Key>(false)
     const { setCurrentSongData } = useContext<any>(SongContext)
-    const { setPagePath } = useContext<any>(PagePathContext)
+    const { setPagePath, setPageDataInitial } = useContext<any>(PagePathContext)
     const [ref, isIntersecting] = useIntersectionObserver({
         root: null,
         rootMargin: "0px",
@@ -41,7 +42,11 @@ const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection }) 
     const [hasInList, setHasInList] = useState<{ [key: string]: boolean }>({});
     const { addItem, getAllItems, deleteItem, logAllItems, itemExists } = useIndexedDB('songDatabase', 'likedSongs');
     useEffect(() => {
-        setViralsData(data)
+        if (data && data.length > 0) {
+            console.log(data);
+            setViralsData(data);
+        }
+        if (data) setFetched(true)
     }, [data])
 
     useEffect(() => {
@@ -114,57 +119,62 @@ const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection }) 
     };
     const handlePagePath = () => {
         setPagePath(path)
+        setPageDataInitial(viralsData)
         console.log("setPagePath");
     }
 
-    return (<div ref={ref}>
-        {viralsData ? <>
-            {/* {viralsData && !loading ? <> */}
-            <h2 className={style.h}>{h}
-                {path ? <button onClick={handlePagePath}><span>&#10148;</span></button> : null}
-            </h2>
-            <div className={style.viral_div}>
-                {viralsData?.map((trend: Data, idx: Key) => (
-                    <div key={idx} className={style.viral_card}
-                        onMouseEnter={() => handleMouseEnter(idx)}
-                        onMouseLeave={() => handleMouseLeave()}
-                    >
-                        <button className={`${style.viral_card_play} ${hoveredCard === idx || playing === idx ? style.show : style.hide}`}
-                            onClick={() => playPause(idx)}>
-                            {playing === idx ?
-                                <Image src={pauseBtn} height={100} width={100} alt={`Play ${trend.name}`} />
-                                :
-                                <Image src={playBtn} height={100} width={100} alt={`Play ${trend.name}`} />
-                            }
-                        </button>
-                        <button
-                            className={`${style.heartContainer} ${!isClicked[trend.songId] ? "" : style.clicked}`}
-                            onClick={() => handleAddSong(trend)}
+    return (
+        <div ref={ref}>
+            {viralsData ? <>
+                {/* {viralsData && !loading ? <> */}
+                <h2 className={style.h}>{h}
+                    {path ? <button onClick={handlePagePath}><span>&#10148;</span></button> : null}
+                </h2>
+                <div className={style.viral_div}>
+                    {viralsData?.map((trend: Data, idx: Key) => (
+                        <div key={idx} className={style.viral_card}
+                            onMouseEnter={() => handleMouseEnter(idx)}
+                            onMouseLeave={() => handleMouseLeave()}
                         >
-                            <div className={`${style.heart} ${!hasInList[trend.songId] ? "" : style.red}`} />
-                        </button>
-                        <div className={style.viral_t}>
-                            <Image src={trend.img.replace("_1.jpg", "_3.jpg")}
-                                placeholder="blur"
-                                blurDataURL={noImage.toString()}
-                                onError={(e) => e.currentTarget.srcset = noImage.toString()}
-                                height={200}
-                                width={150}
-                                style={{
-                                    objectFit: 'cover'
-                                }}
-                                alt={trend.name}
-                                loading="lazy" />
+                            <button className={`${style.viral_card_play} ${hoveredCard === idx || playing === idx ? style.show : style.hide}`}
+                                onClick={() => playPause(idx)}>
+                                {playing === idx ?
+                                    <Image src={pauseBtn} height={100} width={100} alt={`Play ${trend.name}`} />
+                                    :
+                                    <Image src={playBtn} height={100} width={100} alt={`Play ${trend.name}`} />
+                                }
+                            </button>
+                            <button
+                                className={`${style.heartContainer} ${!isClicked[trend.songId] ? "" : style.clicked}`}
+                                onClick={() => handleAddSong(trend)}
+                            >
+                                <div className={`${style.heart} ${!hasInList[trend.songId] ? "" : style.red}`} />
+                            </button>
+                            <div className={style.viral_t}>
+                                <Image src={trend.img.replace("_1.jpg", "_3.jpg")}
+                                    placeholder="blur"
+                                    blurDataURL={noImage.toString()}
+                                    onError={(e) => e.currentTarget.srcset = noImage.toString()}
+                                    height={200}
+                                    width={150}
+                                    style={{
+                                        objectFit: 'cover'
+                                    }}
+                                    alt={trend.name}
+                                    loading="lazy" />
+                            </div>
+                            <div className={style.viral_p}>
+                                <p>{trend.name}</p>
+                                <p>{trend.singer}</p>
+                            </div>
                         </div>
-                        <div className={style.viral_p}>
-                            <p>{trend.name}</p>
-                            <p>{trend.singer}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </> : <LoadingComponent />}
-    </div>);
+                    ))}
+                </div>
+            </> : <>
+                {!fetched ? <LoadingComponent /> : null}
+            </>
+            }
+        </div>);
 }
 
 export default TrendingClient;

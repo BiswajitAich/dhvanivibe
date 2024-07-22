@@ -1,12 +1,13 @@
 import { PagePathContext } from "@/app/componets/context/PathContextProvider";
 import { useContext } from "react";
+import dynamic from "next/dynamic";
+const PageComponent = dynamic(() => import("../componets/client/PageComponent"));
+
 const OldIsGoldSongs = () => {
-    const { setPagePath } = useContext(PagePathContext);
+    const { pageDataInitial } = useContext(PagePathContext);
     return (
-        <div>
-            <button onClick={() => setPagePath("")}>back</button>
-            Enter
-        </div>
+        <PageComponent initialData={pageDataInitial} title={"Old Is Gold Songs"}/>
+
     );
 }
 

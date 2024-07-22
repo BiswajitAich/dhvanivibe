@@ -3,11 +3,12 @@ import React, { useContext, useEffect } from 'react';
 import style from './sidebar.module.css'
 import { PagePathContext } from '../context/PathContextProvider';
 interface Props {
-    view: (view: string) => void
+    // view: (view: string) => void
     handleGrid: (showBenuBar: boolean) => void
 }
-const SideBar: React.FC<Props> = ({ view, handleGrid }) => {
-    const { showBenuBar, setShowBenuBar } = useContext<any>(PagePathContext)
+const SideBar: React.FC<Props> = ({ handleGrid }) => {
+    const { setPagePath, showBenuBar, setShowBenuBar } = useContext<any>(PagePathContext)
+    
     useEffect(() => {
         handleGrid(showBenuBar)
     }, [showBenuBar])
@@ -24,8 +25,8 @@ const SideBar: React.FC<Props> = ({ view, handleGrid }) => {
                         background: "transparent",
                         border: "2px solid #007f63"
                     }}><span>&#10148;</span>CLOSE</button>
-                <button onClick={() => view("home")}>Home</button>
-                <button onClick={() => view("saved-songs")}>Saved Songs</button>
+                <button onClick={() => setPagePath("home")}>Home</button>
+                <button onClick={() => setPagePath("saved-songs")}>Saved Songs</button>
                 <button >.....</button>
             </div>
         </div>

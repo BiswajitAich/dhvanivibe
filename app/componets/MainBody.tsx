@@ -20,46 +20,40 @@ const LatestBengaliSongs = dynamic(() => import("../(pages)/LatestBengaliSongs")
 const OldIsGoldSongs = dynamic(() => import("../(pages)/OldIsGoldSongs"));
 import { PagePathContext } from "./context/PathContextProvider"
 
-interface Props {
-    currentView: string
-}
-const MainBody: React.FC<Props> = ({ currentView }) => {
+// interface Props {
+//     currentView: string
+// }
+const MainBody: React.FC = () => {
     // const [showList, setShowList] = useState<boolean>(false);
-    const [view, setView] = useState<string>(currentView);
-    const { pagePath } = useContext(PagePathContext);
-    const [page, setPage] = useState<string>("");
+    // const [view, setView] = useState<string>(currentView);
+    const { pagePath, setPagePath } = useContext(PagePathContext);
+    // const [page, setPage] = useState<string>("home");
 
-    useEffect(() => {
-        setView(currentView)
-        console.log(currentView);
+    // useEffect(() => {
+    //     setView(currentView)
+    //     console.log(currentView);
 
-    }, [currentView])
+    // }, [currentView])
     // const hendleData = (b: boolean) => {
     //     setShowList((prev: boolean) => b)
     //     console.log(showList);
     // }
 
     useEffect(() => {
-        if (pagePath) {
-            if (pagePath !== page) {
-                // Push new state to history
-                window.history.pushState({ pagePath }, "", `/${pagePath}`);
-                setPage(pagePath);
+            if (pagePath === "home") {
+                // window.history.back();
+                setPagePath("home");
+            } else {
+                window.history.pushState({}, "");
+                setPagePath(pagePath);
             }
-        } else {
-            if (page) {
-                // Go back to the previous state
-                window.history.back();
-                setPage("");
-            }
-        }
-        console.log(pagePath);
+        console.log();
     }, [pagePath]);
 
     useEffect(() => {
-        const handlePopState = (event: PopStateEvent) => {
-            const newPagePath = event.state?.pagePath || "";
-            setPage(newPagePath);
+        const handlePopState = () => {
+            // pagePath === "home" ? setPagePath("home") : setPagePath(null)
+            setPagePath("home")
         };
 
         window.addEventListener("popstate", handlePopState);
@@ -70,11 +64,10 @@ const MainBody: React.FC<Props> = ({ currentView }) => {
     }, []);
 
     return (<>
-        {page === "" ?
+        {pagePath === "home" ?
             <main className={style.main}>
                 <div className={style.showPice} />
-                {view == "saved-songs" ? <SavedList /> : null}
-                {view == "home" ? <>
+                {/* {view == "home" ? <> */}
                     <Suspense fallback={<LoadingComponent />}>
                         <Hero />
                         <Trending />
@@ -84,16 +77,17 @@ const MainBody: React.FC<Props> = ({ currentView }) => {
                         <Bhakti />
                         <Footer />
                     </Suspense>
-                </> : null}
+                {/* </> : null} */}
                 {/* <Player sendToParent={hendleData} /> */}
             </main>
             : null
         }
-        {page === "TrendingSongs" ? <TrendingSongs /> : null}
-        {page === "TopSongs" ? <TopSongs /> : null}
-        {page === "LatestBengaliSongs" ? <LatestBengaliSongs /> : null}
-        {page === "OldIsGoldSongs" ? <OldIsGoldSongs /> : null}
-        {page === "BhaktiSongs" ? <BhaktiSongs /> : null}
+        {pagePath == "saved-songs" ? <SavedList /> : null}
+        {pagePath === "TrendingSongs" ? <TrendingSongs /> : null}
+        {pagePath === "TopSongs" ? <TopSongs /> : null}
+        {pagePath === "LatestBengaliSongs" ? <LatestBengaliSongs /> : null}
+        {pagePath === "OldIsGoldSongs" ? <OldIsGoldSongs /> : null}
+        {pagePath === "BhaktiSongs" ? <BhaktiSongs /> : null}
 
     </>
     )

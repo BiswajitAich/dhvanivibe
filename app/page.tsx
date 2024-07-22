@@ -11,15 +11,15 @@ import PagePathContextProvider from "./componets/context/PathContextProvider";
 
 export default function Home() {
   // const [topHeight, setTopHeight] = useState<number>(0);
-  const [currentView, setCurrentView] = useState<string>("home");
+  // const [currentView, setCurrentView] = useState<string>("home");
   const [show, setShow] = useState<boolean>();
-  const handleViewChange = (view: string) => {
-    if (view === "home")
-      window.history.back()
-    else
-      window.history.pushState(null, "")
-    setCurrentView(view);
-  }
+  // const handleViewChange = (view: string) => {
+  //   if (view === "home")
+  //     window.history.back()
+  //   else
+  //     window.history.pushState(null, "")
+  //   setCurrentView(view);
+  // }
   const handleSetShow = (e: boolean) => {
     if (e) {
       setShow(e);
@@ -30,17 +30,17 @@ export default function Home() {
       }, 300)
     }
   }
-  useEffect(() => {
-    const handlePopState = () => {
-      setCurrentView("home");
-    };
+  // useEffect(() => {
+  //   const handlePopState = () => {
+  //     setCurrentView("home");
+  //   };
 
-    window.addEventListener("popstate", handlePopState);
+  //   window.addEventListener("popstate", handlePopState);
 
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  // }, []);
   //   useEffect(() => {
   //     const handleScroll = () => {
 
@@ -68,8 +68,10 @@ export default function Home() {
         {/* <Header topHeight={topHeight} /> */}
         <SongContextProvider>
           <PagePathContextProvider>
-            <SideBar view={handleViewChange} handleGrid={handleSetShow} />
-            <MainBody currentView={currentView} />
+            {/* <SideBar view={handleViewChange} handleGrid={handleSetShow} /> */}
+            <SideBar  handleGrid={handleSetShow} />
+            {/* <MainBody currentView={currentView} /> */}
+            <MainBody />
             <Player />
           </PagePathContextProvider>
         </SongContextProvider>
