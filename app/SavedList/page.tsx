@@ -5,8 +5,8 @@ import i from '@/public/music-girl.webp';
 import Card from './Card';
 // import Player from '../componets/player/Player';
 import { useEffect, useState } from "react";
-import useIndexedDB from '../componets/js/useIndexedDB';
 import Header from '../componets/Header';
+import useIndexedDB from '../js/useIndexedDB';
 interface data {
     img: string,
     name: string,

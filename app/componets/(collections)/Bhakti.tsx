@@ -1,6 +1,6 @@
+import useFetch from "@/app/js/useFetch";
+import TrendingClient from "@/app/uiComponents/TrendingClient";
 import { useEffect, useState } from "react";
-import TrendingClient from "../client/TrendingClient";
-import useFetch from "../js/useFetch";
 
 interface data {
     img: string,
@@ -37,6 +37,7 @@ const Bhakti = () => {
             h={"Bhakti Songs"}
             path={"BhaktiSongs"}
             handleIntersection={handleIntersection}
+            endPoint={"bhakti-latest-updates"}
         />
     );
 }

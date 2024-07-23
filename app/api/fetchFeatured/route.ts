@@ -4,6 +4,7 @@ export async function GET(req: NextRequest) {
     const {searchParams} = new URL(req.url);
     const page = searchParams.get('page') || 1;
     const location = searchParams.get('location');
+    
     try {
         const res = await fetch(`https://pagal-music-api.vercel.app/${location}?page=${page}`,{
             next:{
@@ -12,7 +13,7 @@ export async function GET(req: NextRequest) {
             // cache: "no-cache"
         })
         const data = await res.json()
-        console.log("called!!!!!");
+        console.log("called!!!!!",data[0]);
         
         return new NextResponse(JSON.stringify(data))
     } catch (error) {

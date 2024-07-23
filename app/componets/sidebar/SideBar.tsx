@@ -2,16 +2,19 @@
 import React, { useContext, useEffect } from 'react';
 import style from './sidebar.module.css'
 import { PagePathContext } from '../context/PathContextProvider';
+import useCustomNavigation from '@/app/js/useCustomNavigation';
 interface Props {
     // view: (view: string) => void
     handleGrid: (showBenuBar: boolean) => void
 }
 const SideBar: React.FC<Props> = ({ handleGrid }) => {
-    const { setPagePath, showBenuBar, setShowBenuBar } = useContext<any>(PagePathContext)
-    
+    const { showBenuBar, setShowBenuBar } = useContext<any>(PagePathContext)
+    const { navigate } = useCustomNavigation();
+
     useEffect(() => {
         handleGrid(showBenuBar)
-    }, [showBenuBar])
+    }, [showBenuBar, handleGrid])
+    
     const handleDisplayMenuBar = () => {
         setShowBenuBar(false);
     };
@@ -25,8 +28,8 @@ const SideBar: React.FC<Props> = ({ handleGrid }) => {
                         background: "transparent",
                         border: "2px solid #007f63"
                     }}><span>&#10148;</span>CLOSE</button>
-                <button onClick={() => setPagePath("home")}>Home</button>
-                <button onClick={() => setPagePath("saved-songs")}>Saved Songs</button>
+                <button onClick={() => navigate("forth", "home")}>Home</button>
+                <button onClick={() => navigate("forth", "saved-songs")}>Saved Songs</button>
                 <button >.....</button>
             </div>
         </div>

@@ -4,12 +4,13 @@ import Image from "next/image";
 import style from "@/app/css/trending.module.css"
 import playBtn from "@/public/play-button.webp"
 import pauseBtn from "@/public/pause-button.webp"
-import { SongContext } from "../context/SongContextProvider";
 import noImage from "@/public/no-image.webp"
 import useIntersectionObserver from "../js/useIntersectionObserver";
-import LoadingComponent from "../LoadingComponent";
 import useIndexedDB from "../js/useIndexedDB";
-import { PagePathContext } from "../context/PathContextProvider";
+import { PagePathContext } from "../componets/context/PathContextProvider";
+import { SongContext } from "../componets/context/SongContextProvider";
+import LoadingComponent from "../componets/LoadingComponent";
+import useCustomNavigation from "../js/useCustomNavigation";
 
 interface Data {
     img: string,
@@ -18,19 +19,20 @@ interface Data {
     songId: string
 }
 interface Props {
-    data: any,
-    h: string,
-    path: string,
-    handleIntersection: (e: boolean) => void
+    data: any;
+    h: string;
+    path: string;
+    handleIntersection: (e: boolean) => void;
+    endPoint: string;
 }
 
-const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection }) => {
+const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection, endPoint }) => {
     const [viralsData, setViralsData] = useState<any>()
     const [fetched, setFetched] = useState<boolean>(false)
     const [hoveredCard, setHoveredCard] = useState<boolean | Key>(false)
     const [playing, setPlaying] = useState<boolean | Key>(false)
     const { setCurrentSongData } = useContext<any>(SongContext)
-    const { setPagePath, setPageDataInitial } = useContext<any>(PagePathContext)
+    const { setEndPoint, setPageDataInitial } = useContext<any>(PagePathContext)
     const [ref, isIntersecting] = useIntersectionObserver({
         root: null,
         rootMargin: "0px",
@@ -40,10 +42,12 @@ const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection }) 
     // const [hasFetched, setHasFetched] = useState(false);
     const [isClicked, setIsClicked] = useState<{ [key: string]: boolean }>({});
     const [hasInList, setHasInList] = useState<{ [key: string]: boolean }>({});
-    const { addItem, getAllItems, deleteItem, logAllItems, itemExists } = useIndexedDB('songDatabase', 'likedSongs');
+    const { addItem, deleteItem, logAllItems, itemExists } = useIndexedDB('songDatabase', 'likedSongs');
+    const { navigate } = useCustomNavigation();
+
     useEffect(() => {
         if (data && data.length > 0) {
-            console.log(data);
+            // console.log(data);
             setViralsData(data);
         }
         if (data) setFetched(true)
@@ -118,8 +122,9 @@ const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection }) 
         await logAllItems()
     };
     const handlePagePath = () => {
-        setPagePath(path)
+        navigate("forth", path);
         setPageDataInitial(viralsData)
+        setEndPoint(endPoint)
         console.log("setPagePath");
     }
 

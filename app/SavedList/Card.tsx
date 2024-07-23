@@ -2,8 +2,8 @@ import Image from "next/image";
 import errImg from '@/public/no-image.webp'
 import style from './css/card.module.css'
 import React, { useContext, useState } from "react";
-import useIndexedDB from "../componets/js/useIndexedDB";
 import { SongContext } from "../componets/context/SongContextProvider";
+import useIndexedDB from "../js/useIndexedDB";
 interface data {
     img: string,
     name: string,

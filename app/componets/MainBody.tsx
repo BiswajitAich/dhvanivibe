@@ -1,7 +1,5 @@
 "use client"
 import style from "@/app/css/mainBody.module.css"
-// import SearchSong from "./SearchSong"
-// import Player from "./player/Player"
 import dynamic from "next/dynamic"
 import { Suspense, useContext, useEffect, useState } from "react"
 const Trending = dynamic(() => import("./(collections)/Trending"))
@@ -18,42 +16,18 @@ const TrendingSongs = dynamic(() => import("../(pages)/TrendingSongs"));
 const BhaktiSongs = dynamic(() => import("../(pages)/BhaktiSongs"));
 const LatestBengaliSongs = dynamic(() => import("../(pages)/LatestBengaliSongs"));
 const OldIsGoldSongs = dynamic(() => import("../(pages)/OldIsGoldSongs"));
-import { PagePathContext } from "./context/PathContextProvider"
+import useCustomNavigation from "../js/useCustomNavigation"
+import { CustomNavigationContext } from "./context/CustomNavigationContextProvider"
 
-// interface Props {
-//     currentView: string
-// }
 const MainBody: React.FC = () => {
-    // const [showList, setShowList] = useState<boolean>(false);
-    // const [view, setView] = useState<string>(currentView);
-    const { pagePath, setPagePath } = useContext(PagePathContext);
-    // const [page, setPage] = useState<string>("home");
-
-    // useEffect(() => {
-    //     setView(currentView)
-    //     console.log(currentView);
-
-    // }, [currentView])
-    // const hendleData = (b: boolean) => {
-    //     setShowList((prev: boolean) => b)
-    //     console.log(showList);
-    // }
-
-    useEffect(() => {
-            if (pagePath === "home") {
-                // window.history.back();
-                setPagePath("home");
-            } else {
-                window.history.pushState({}, "");
-                setPagePath(pagePath);
-            }
-        console.log();
-    }, [pagePath]);
+    const [view, setView] = useState<string>("home");
+    const { navigate, lastComponent } = useCustomNavigation();
+    const { navStack } = useContext(CustomNavigationContext);
 
     useEffect(() => {
         const handlePopState = () => {
-            // pagePath === "home" ? setPagePath("home") : setPagePath(null)
-            setPagePath("home")
+            navigate("");
+            setView(lastComponent)
         };
 
         window.addEventListener("popstate", handlePopState);
@@ -63,31 +37,32 @@ const MainBody: React.FC = () => {
         };
     }, []);
 
+    useEffect(() => {
+        setView(lastComponent)
+    }, [navStack]);
+
     return (<>
-        {pagePath === "home" ?
+        {view === "home" ?
             <main className={style.main}>
                 <div className={style.showPice} />
-                {/* {view == "home" ? <> */}
-                    <Suspense fallback={<LoadingComponent />}>
-                        <Hero />
-                        <Trending />
-                        <TopUpdates />
-                        <LatestBengali />
-                        <OldIsGold />
-                        <Bhakti />
-                        <Footer />
-                    </Suspense>
-                {/* </> : null} */}
-                {/* <Player sendToParent={hendleData} /> */}
+                <Suspense fallback={<LoadingComponent />}>
+                    <Hero />
+                    <Trending />
+                    <TopUpdates />
+                    <LatestBengali />
+                    <OldIsGold />
+                    <Bhakti />
+                    <Footer />
+                </Suspense>
             </main>
             : null
         }
-        {pagePath == "saved-songs" ? <SavedList /> : null}
-        {pagePath === "TrendingSongs" ? <TrendingSongs /> : null}
-        {pagePath === "TopSongs" ? <TopSongs /> : null}
-        {pagePath === "LatestBengaliSongs" ? <LatestBengaliSongs /> : null}
-        {pagePath === "OldIsGoldSongs" ? <OldIsGoldSongs /> : null}
-        {pagePath === "BhaktiSongs" ? <BhaktiSongs /> : null}
+        {view == "saved-songs" ? <SavedList /> : null}
+        {view === "TrendingSongs" ? <TrendingSongs /> : null}
+        {view === "TopSongs" ? <TopSongs /> : null}
+        {view === "LatestBengaliSongs" ? <LatestBengaliSongs /> : null}
+        {view === "OldIsGoldSongs" ? <OldIsGoldSongs /> : null}
+        {view === "BhaktiSongs" ? <BhaktiSongs /> : null}
 
     </>
     )

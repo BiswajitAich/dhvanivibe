@@ -1,7 +1,7 @@
 import { PagePathContext } from "@/app/componets/context/PathContextProvider";
 import { useContext } from "react";
 import dynamic from "next/dynamic";
-const PageComponent = dynamic(() => import("../componets/client/PageComponent"));
+const PageComponent = dynamic(() => import("../uiComponents/PageComponent"));
 
 const OldIsGoldSongs = () => {
     const { pageDataInitial } = useContext(PagePathContext);

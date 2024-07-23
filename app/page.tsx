@@ -1,11 +1,12 @@
 "use client"
 import style from "./page.module.css"
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import MainBody from "./componets/MainBody";
 import SideBar from "./componets/sidebar/SideBar";
 import Player from "./componets/player/Player";
 import SongContextProvider from "./componets/context/SongContextProvider";
 import PagePathContextProvider from "./componets/context/PathContextProvider";
+import CustomNavigationContextProvider from "./componets/context/CustomNavigationContextProvider";
 // import Header from "./componets/Header";
 // import styles from "./page.module.css";
 
@@ -67,13 +68,15 @@ export default function Home() {
       <Suspense fallback={"loading..."}>
         {/* <Header topHeight={topHeight} /> */}
         <SongContextProvider>
-          <PagePathContextProvider>
-            {/* <SideBar view={handleViewChange} handleGrid={handleSetShow} /> */}
-            <SideBar  handleGrid={handleSetShow} />
-            {/* <MainBody currentView={currentView} /> */}
-            <MainBody />
-            <Player />
-          </PagePathContextProvider>
+          <CustomNavigationContextProvider >
+            <PagePathContextProvider>
+              {/* <SideBar view={handleViewChange} handleGrid={handleSetShow} /> */}
+              <SideBar handleGrid={handleSetShow} />
+              {/* <MainBody currentView={currentView} /> */}
+              <MainBody />
+              <Player />
+            </PagePathContextProvider>
+          </CustomNavigationContextProvider>
         </SongContextProvider>
       </Suspense>
     </div>

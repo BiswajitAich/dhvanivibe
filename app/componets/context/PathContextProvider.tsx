@@ -8,8 +8,8 @@ interface SongPageDataInitial {
   size: string;
 }
 interface PagePathContextType {
-  pagePath: string;
-  setPagePath: Dispatch<SetStateAction<string>>;
+  endPoint: string;
+  setEndPoint: Dispatch<SetStateAction<string>>;
   showBenuBar: boolean | null;
   setShowBenuBar: Dispatch<SetStateAction<boolean | null>>;
   pageDataInitial: SongPageDataInitial[];
@@ -17,8 +17,8 @@ interface PagePathContextType {
 }
 
 const initialContext: PagePathContextType = {
-  pagePath: "",
-  setPagePath: () => {},
+  endPoint: "",
+  setEndPoint: () => {},
   showBenuBar: null,
   setShowBenuBar: ()=>{},
   pageDataInitial: [],
@@ -28,12 +28,12 @@ const initialContext: PagePathContextType = {
 export const PagePathContext = createContext<PagePathContextType>(initialContext);
 
 export default function PathContextProvider({ children }: { children: ReactNode }): JSX.Element {
-  const [pagePath, setPagePath] = useState<string>("home");
+  const [endPoint, setEndPoint] = useState<string>("");
   const [showBenuBar, setShowBenuBar] = useState<boolean | null>(null);
   const [pageDataInitial, setPageDataInitial] = useState<SongPageDataInitial[]>([]);
 
   return (
-    <PagePathContext.Provider value={{ pagePath, setPagePath, showBenuBar, setShowBenuBar, pageDataInitial, setPageDataInitial }}>
+    <PagePathContext.Provider value={{ endPoint, setEndPoint, showBenuBar, setShowBenuBar, pageDataInitial, setPageDataInitial }}>
       {children}
     </PagePathContext.Provider>
   );
