@@ -20,8 +20,8 @@ interface Song {
 }
 
 interface Props {
-    initialData: Song[],
-    title: string
+    initialData: Song[];
+    title: string;
 }
 
 interface DownloadOption {
@@ -41,7 +41,6 @@ const PageComponent: React.FC<Props> = ({ initialData, title }) => {
     const { endPoint } = useContext<any>(PagePathContext)
 
     useEffect(() => {
-        // Only update if initialData is not empty and is different from current state
         if (initialData.length > 0 && initialData !== pageDataToDisplay) {
             setPageDataToDisplay(initialData);
         }
@@ -89,12 +88,12 @@ const PageComponent: React.FC<Props> = ({ initialData, title }) => {
             const data = await useFetch(endPoint, pageNumber);
             if (data.length > 0) {
                 setPageDataToDisplay((prevData) => [...prevData, ...data]);
-                setPageNumber(prev=>prev+1)
+                setPageNumber(prev => prev + 1)
                 console.log(pageNumber);
-                
+
             }
             console.log(data);
-            
+
         } catch (error) {
             console.log("Error fetching more data:", error);
         }
@@ -122,7 +121,7 @@ const PageComponent: React.FC<Props> = ({ initialData, title }) => {
                             <div className={styles.songInfo}>
                                 <section>
                                     <p className={styles.songTitle}>{song.name}</p>
-                                    <p className={styles.songSingers}>{song.singers?.length > 0 ? song.singers.join(", ") : "Unknown Singer"}</p>
+                                    <p className={styles.songSingers}>{song.singers?.length > 0 ? song.singers.map((singer: string, idx: React.Key) => (<span key={idx}>{singer}</span>)) : "Unknown Singer"}</p>
                                     <p className={styles.songSize}>{song.size}</p>
                                 </section>
                                 <section>

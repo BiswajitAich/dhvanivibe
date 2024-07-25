@@ -16,6 +16,8 @@ const TrendingSongs = dynamic(() => import("../(pages)/TrendingSongs"));
 const BhaktiSongs = dynamic(() => import("../(pages)/BhaktiSongs"));
 const LatestBengaliSongs = dynamic(() => import("../(pages)/LatestBengaliSongs"));
 const OldIsGoldSongs = dynamic(() => import("../(pages)/OldIsGoldSongs"));
+const LatestUpdatesSongs = dynamic(() => import("../(pages)/LatestUpdatesSongs"));
+const LatestUpdates = dynamic(() => import("./(collections)/LatestUpdates"));
 import useCustomNavigation from "../js/useCustomNavigation"
 import { CustomNavigationContext } from "./context/CustomNavigationContextProvider"
 
@@ -47,6 +49,7 @@ const MainBody: React.FC = () => {
                 <div className={style.showPice} />
                 <Suspense fallback={<LoadingComponent />}>
                     <Hero />
+                    <LatestUpdates />
                     <Trending />
                     <TopUpdates />
                     <LatestBengali />
@@ -58,6 +61,7 @@ const MainBody: React.FC = () => {
             : null
         }
         {view == "saved-songs" ? <SavedList /> : null}
+        {view === "LatestUpdatesSongs" ? <LatestUpdatesSongs /> : null}
         {view === "TrendingSongs" ? <TrendingSongs /> : null}
         {view === "TopSongs" ? <TopSongs /> : null}
         {view === "LatestBengaliSongs" ? <LatestBengaliSongs /> : null}

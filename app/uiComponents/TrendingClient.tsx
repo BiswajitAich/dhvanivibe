@@ -129,10 +129,11 @@ const TrendingClient: React.FC<Props> = ({ data, h, path, handleIntersection, en
     }
 
     return (
-        <div ref={ref}>
+        <div ref={ref} className={style.container}>
             {viralsData ? <>
                 {/* {viralsData && !loading ? <> */}
-                <h2 className={style.h}>{h}
+                <h2 className={style.h}>
+                    <p>{h}</p>
                     {path ? <button onClick={handlePagePath}><span>&#10148;</span></button> : null}
                 </h2>
                 <div className={style.viral_div}>

@@ -1,20 +1,21 @@
 "use client"
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import style from './sidebar.module.css'
 import { PagePathContext } from '../context/PathContextProvider';
 import useCustomNavigation from '@/app/js/useCustomNavigation';
-interface Props {
-    // view: (view: string) => void
-    handleGrid: (showBenuBar: boolean) => void
-}
-const SideBar: React.FC<Props> = ({ handleGrid }) => {
+// interface Props {
+// view: (view: string) => void
+// handleGrid: (showBenuBar: boolean) => void
+// }
+const SideBar = () => {
+    // const SideBar: React.FC<Props> = ({ handleGrid }) => {
     const { showBenuBar, setShowBenuBar } = useContext<any>(PagePathContext)
     const { navigate } = useCustomNavigation();
 
-    useEffect(() => {
-        handleGrid(showBenuBar)
-    }, [showBenuBar, handleGrid])
-    
+    // useEffect(() => {
+    //     handleGrid(showBenuBar)
+    // }, [showBenuBar, handleGrid])
+
     const handleDisplayMenuBar = () => {
         setShowBenuBar(false);
     };

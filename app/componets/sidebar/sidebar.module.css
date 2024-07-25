@@ -2,7 +2,6 @@
     height: 100%;
     z-index: 9999;
     background: #0c021b;
-    min-width: 150px;
 }
 
 .container {
@@ -17,15 +16,16 @@
 .container button {
     background-color: #122d3782;
     border: none;
-    padding: 5px 0;
+    padding: 8px 0;
     border-radius: 4px;
     font-size: medium;
     font-family: cursive;
-    color: #007f63;
+    color: #01b38c;
 }
 
 .close {
     display: none;
+    margin: 20px 0px;
 }
 
 .slideIn {
@@ -59,9 +59,14 @@
 }
 
 @media screen and (max-width: 600px) {
+
     /* .sideBar {
         display: none;
     } */
+    .sideBar {
+        min-width: 250px;
+        position: fixed;
+    }
 
     .close {
         display: block;
